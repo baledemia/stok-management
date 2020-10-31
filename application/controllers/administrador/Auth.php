@@ -6,10 +6,12 @@ class Auth extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		// $this->session->destroy();
 	}
 
 	public function index()
 	{	
+
 		if(isset($_COOKIE['id']) && isset($_COOKIE['key'])) :
 			$id = $_COOKIE['id'];
 			$key = $_COOKIE['key'];
@@ -32,7 +34,7 @@ class Auth extends CI_Controller {
 			}
 		endif;
 
-		if($this->session->userdata('email')) {
+		if($this->session->userdata('username')) {
 			redirect('administrador/admin');
 		}
 
