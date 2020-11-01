@@ -80,10 +80,6 @@ function tgl_indo($tanggal){
 		'Des'
 	);
 	$pecahkan = explode('-', $tanggal);
-	
-	// variabel pecahkan 0 = tanggal
-	// variabel pecahkan 1 = bulan
-	// variabel pecahkan 2 = tahun
  
 	return substr($pecahkan[2], 0, 2) . ' ' . $bulan[(int)$pecahkan[1] ] . ' ' . $pecahkan[0];
 }
