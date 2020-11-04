@@ -9,7 +9,7 @@
 	    	<h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
 	    </div>
 	    <ol class="breadcrumb">
-	      <li class="breadcrumb-item"><a href="./">Role</a></li>
+	      <li class="breadcrumb-item"><a href="./">Type Kawat</a></li>
 	      <li class="breadcrumb-item active">Tambah</li>
 	    </ol>
   	</div>
@@ -21,29 +21,29 @@
 				<div class="card mb-4">
 					<?php if($this->uri->segment(3) !== 'edit') : ?>
 					<div class="card-header py-3">
-            <h5 class="m-0 font-weight-bold text-primary">Tambah Role Baru</h5>
-            <p>Untuk bisa mengakses beberapa menu yang terkait.</p>
+            <h5 class="m-0 font-weight-bold text-primary">Tambah Type Kawat</h5>
+            <p>Beberapa type kawat sebagai bahan baku.</p>
           </div>
         	<?php endif ?>
 					<div class="card-body">
 
 						<?php
 						if($this->uri->segment(3) == 'edit') :
-			        $url = site_url('administrador/role/edit/'.$role->id);
+			        $url = site_url('administrador/type-kawat/edit/'.$type->id);
 			      else:
-			        $url = site_url('administrador/admin/role');
+			        $url = site_url('administrador/type-kawat');
 			      endif ?>
 
 						<form action="<?=$url ?>" method="POST">
 				    	<div class="form-group">
-				    		<input type="text" class="form-control" name="role" id="role" placeholder="Role" 
-				    			value="<?=($this->uri->segment(3) == 'edit') ? $role->role_name : set_value('role') ?>">
-				      	<?=form_error('role', '<small class="text-danger">', '</small>') ?>
+				    		<input type="text" class="form-control" name="type_name" id="type_name"
+				    			value="<?=($this->uri->segment(3) == 'edit') ? $type->type_name : set_value('type_name') ?>">
+				      	<?=form_error('type_name', '<small class="text-danger">', '</small>') ?>
 				    	</div>
 				      
 				      <button class="btn btn-primary" type="submit">Simpan Data</button>
 				      <?php if($this->uri->segment(3) == 'edit') : ?>
-				      <a href="<?=site_url('administrador/admin/role') ?>" class="btn btn-default"> Batal</a>
+				      <a href="<?=site_url('administrador/type-kawat') ?>" class="btn btn-default"> Batal</a>
 				    	<?php endif ?>
 						</form>
 					</div>
@@ -51,12 +51,12 @@
 				
 				<div class="card mb-4">
 					<div class="card-header">
-						<button class="btn btn-danger btn-sm" id="delete-role"><i class="fa fa-trash"></i></button>
+						<button class="btn btn-danger btn-sm" id="delete-type-kawat"><i class="fa fa-trash"></i></button>
 					</div>
 					<div class="card-body">
 						
 						<div class="table-responsive">
-							<table class="table" id="dataTable-Role">
+							<table class="table" id="dataTable-type-kawat">
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
@@ -66,7 +66,7 @@
 								        <label class="custom-control-label" for="select_all">Select All</label>
 								      </div>
 							      </th>
-							      <th scope="col">Role</th>
+							      <th scope="col">Type</th>
 							      <th scope="col">Created</th>
 							      <th scope="col">Updated</th>
 							      <th scope="col">Action</th>
@@ -76,7 +76,7 @@
 						</div>
 						<div class="card-footer">
 							<mark>Note: </mark>
-							<small class="text-danger">Data Role jika didelete maka data usersnya yang lain akan terhapus.</small>
+							<small class="text-danger">Data type kawat jika didelete maka data order stok akan terhapus.</small>
 						</div>
 					</div>
 			</div>
@@ -91,22 +91,22 @@
   <script src="<?=base_url('assets') ?>/backend/vendor/datatables/dataTables.bootstrap4.min.js"></script>
  	<script>
   	// global variable
-		var manageRoleTable;
+		var manageTypeKawatTable;
 
 		$(document).ready(function() {
-			manageRoleTable = $("#dataTable-Role").DataTable({
-				"ajax": '<?php echo site_url('administrador/role/index')  ?>',
+			manageTypeKawatTable = $("#dataTable-type-kawat").DataTable({
+				"ajax": '<?php echo site_url('administrador/type-kawat/getTypeKawat')  ?>',
 				'orders': []
 			});	
 		});
 
-		$('#delete-role').prop("disabled", true)
-		$('#dataTable-Role').on('click', 'input.delete-checkbox', function() {
+		$('#delete-type-kawat').prop("disabled", true)
+		$('#dataTable-type-kawat').on('click', 'input.delete-checkbox', function() {
 			if ($(this).is(':checked')) {
-				$('#delete-role').prop("disabled", false);
+				$('#delete-type-kawat').prop("disabled", false);
 			} else {
 				if ($('input.delete-checkbox').filter(':checked').length < 1) {
-					$('#delete-role').attr('disabled',true)
+					$('#delete-type-kawat').attr('disabled',true)
 				}
 			}
 		})
@@ -114,23 +114,23 @@
 		// Handle click on "Select all" control
     $('#select_all').on('click', function() {
       // Get all rows with search applied
-      var rows = manageRoleTable.rows({ 'search': 'applied' }).nodes();
+      var rows = manageTypeKawatTable.rows({ 'search': 'applied' }).nodes();
       // Check/uncheck checkboxes for all rows in the table
       $('input.delete-checkbox[type="checkbox"]', rows).prop('checked', this.checked)
     })
 
-    $('#delete-role').on('click', function() {
+    $('#delete-type-kawat').on('click', function() {
 	    if( confirm("Are you sure you want to delete this?") ) {
-	      var data = {'roles[]' : []}
+	      var data = {'type_kawat[]' : []}
 
-	      manageRoleTable.$(".delete-checkbox:checked").each(function() {
-	        data['roles[]'].push($(this).val())
+	      manageTypeKawatTable.$(".delete-checkbox:checked").each(function() {
+	        data['type_kawat[]'].push($(this).val())
 	      })
 
-	      $.post("<?=site_url('administrador/role/remove-all-role')?>", data)
+	      $.post("<?=site_url('administrador/type_kawat/remove-all-type-kawat')?>", data)
 		      .done(function( data ) {
 		        console.log(data)
-		        window.location.href = "<?=site_url('administrador/admin/role')?>"
+		        window.location.href = "<?=site_url('administrador/type_kawat')?>"
 		    })
 
 	   	} else {

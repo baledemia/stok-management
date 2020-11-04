@@ -23,12 +23,13 @@
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
       aria-expanded="true" aria-controls="collapseBootstrap">
       <i class="far fa-fw fa-window-maximize"></i>
-      <span>Bahan Material</span>
+      <span>Material</span>
     </a>
     <div id="collapseBootstrap" class="collapse" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="">CU</a>
-        <a class="collapse-item" href="">PVC</a>
+        <a class="collapse-item" href="<?=site_url('administrador/category') ?>">Raw Material</a>
+        <a class="collapse-item" href="<?=site_url('administrador/machine') ?>">Machine</a>
+        <a class="collapse-item" href="<?=site_url('administrador/type_kawat') ?>">Wire Type</a>
       </div>
     </div>
   </li>
@@ -44,6 +45,7 @@
         <a class="collapse-item" href="<?=site_url('administrador/supplier') ?>">Supplier</a>
         <a class="collapse-item" href="<?=site_url('administrador/color') ?>">Color</a>
         <a class="collapse-item" href="<?=site_url('administrador/size') ?>">Size</a>
+        <a class="collapse-item" href="<?=site_url('administrador/warehouse') ?>">Warehouse</a>
       </div>
     </div>
   </li>
@@ -76,6 +78,30 @@
     </div>
   </li>
 
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    User Management
+  </div>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?=site_url('administrador/role') ?>">
+      <i class="fas fa-users-cog"></i>
+      <span>Role</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?=site_url('administrador/user') ?>">
+      <i class="far fa-user"></i>
+      <span>User</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?=site_url('administrador/menu') ?>">
+      <i class="far fa-calendar-minus"></i>
+      <span>Menu</span></a>
+  </li>
+
+  <hr class="sidebar-divider">
   <li class="nav-item">
     <?php $logout = 'administrador/auth/logout' ?>
     <a class="nav-link" href="<?=site_url($logout) ?>">

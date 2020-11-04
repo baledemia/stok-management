@@ -21,11 +21,10 @@
 				<div class="card mb-4">
 				  <div class="card-body">
 				    <div class="row">
-
 				    	<div class="col-sm-4">
 				    		<div class="form-group">
 						    	<label for="notelp" class="text-primary">Username</label>
-						    	<input type="text" readonly id="username" name="username" placeholder="username" class="form-control" value="<?=$profile->username ?>">
+						    	<input type="text" readonly id="username" name="username" placeholder="Username" class="form-control" value="<?=$profile->username ?>">
 						    	<?=form_error('username', '<small class="text-danger">', '</small>') ?>
 						    </div>
 				    	</div>
@@ -35,10 +34,8 @@
 						    	<input type="text" placeholder="Name" id="fullname" name="fullname" class="form-control" value="<?=$profile->fullname ?>">		
 						    	<?=form_error('fullname', '<small class="text-danger">', '</small>') ?>
 						    </div>
-				    	</div>
-				    	
+				    	</div> 	
 				    </div>
-
 				    <div class="form-group">
 				    	<label for="notelp" class="text-primary">Number Telepon</label>
 				    	<input type="text" id="notelp" name="notelp" placeholder="Nomor Telepon" class="form-control" value="<?=$profile->number_phone ?>">
@@ -50,14 +47,15 @@
 				    	<textarea name="address" placeholder="Alamat Lengkap" id="address" class="form-control"><?=$profile->address ?></textarea>
 				    	<?=form_error('address', '<small class="text-danger">', '</small>') ?>
 				    </div>
-
+	    
 				  </div>
 				  <div class="card-footer">
 				    <a href="<?=site_url('administrador/admin') ?>" class="btn btn-secondary">Batal</a>
 				    <button class="btn btn-primary" type="submit">Update Admin</button>
-				  </div>
+			  	</div>
 				</div>
 			</div>
+
 			<div class="col-sm-3">
 				<div class="card mb-4">
 					<div class="card-body">

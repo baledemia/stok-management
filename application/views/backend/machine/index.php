@@ -9,7 +9,7 @@
 	    	<h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
 	    </div>
 	    <ol class="breadcrumb">
-	      <li class="breadcrumb-item"><a href="./">Role</a></li>
+	      <li class="breadcrumb-item"><a href="./">Mesin</a></li>
 	      <li class="breadcrumb-item active">Tambah</li>
 	    </ol>
   	</div>
@@ -21,29 +21,37 @@
 				<div class="card mb-4">
 					<?php if($this->uri->segment(3) !== 'edit') : ?>
 					<div class="card-header py-3">
-            <h5 class="m-0 font-weight-bold text-primary">Tambah Role Baru</h5>
-            <p>Untuk bisa mengakses beberapa menu yang terkait.</p>
+            <h5 class="m-0 font-weight-bold text-primary">Tambah Nomor Mesin</h5>
+            <p>Type Mesin sebagai pengolahan bahan baku</p>
           </div>
         	<?php endif ?>
 					<div class="card-body">
 
 						<?php
 						if($this->uri->segment(3) == 'edit') :
-			        $url = site_url('administrador/role/edit/'.$role->id);
+			        $url = site_url('administrador/machine/edit/'.$machine->id);
 			      else:
-			        $url = site_url('administrador/admin/role');
+			        $url = site_url('administrador/machine');
 			      endif ?>
 
 						<form action="<?=$url ?>" method="POST">
+				    	<div class="row">
+				    		<div class="form-group col-sm-3">
+					    		<input type="text" class="form-control" name="no_machine" 
+					    			id="no_machine" placeholder="Nomor Mesin" 
+					    			value="<?=($this->uri->segment(3) == 'edit') ? $machine->no_machine : set_value('no_machine') ?>">
+					      	<?=form_error('no_machine', '<small class="text-danger">', '</small>') ?>
+				    		</div>
+				    	</div>
+
 				    	<div class="form-group">
-				    		<input type="text" class="form-control" name="role" id="role" placeholder="Role" 
-				    			value="<?=($this->uri->segment(3) == 'edit') ? $role->role_name : set_value('role') ?>">
-				      	<?=form_error('role', '<small class="text-danger">', '</small>') ?>
+				    		<label for="type_machine" class="font-weight-bold">Type Mesin</label>
+              	<input class="form-control" id="type_machine" placeholder="Type Mesin" name="type_machine" value="<?=($this->uri->segment(3) == 'edit') ? $machine->type_machine : set_value('type_machine') ?>">
 				    	</div>
 				      
 				      <button class="btn btn-primary" type="submit">Simpan Data</button>
 				      <?php if($this->uri->segment(3) == 'edit') : ?>
-				      <a href="<?=site_url('administrador/admin/role') ?>" class="btn btn-default"> Batal</a>
+				      <a href="<?=site_url('administrador/machine') ?>" class="btn btn-default"> Batal</a>
 				    	<?php endif ?>
 						</form>
 					</div>
@@ -51,12 +59,12 @@
 				
 				<div class="card mb-4">
 					<div class="card-header">
-						<button class="btn btn-danger btn-sm" id="delete-role"><i class="fa fa-trash"></i></button>
+						<button class="btn btn-danger btn-sm" id="delete-machine"><i class="fa fa-trash"></i></button>
 					</div>
 					<div class="card-body">
 						
 						<div class="table-responsive">
-							<table class="table" id="dataTable-Role">
+							<table class="table" id="dataTable-machine">
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
@@ -66,9 +74,9 @@
 								        <label class="custom-control-label" for="select_all">Select All</label>
 								      </div>
 							      </th>
-							      <th scope="col">Role</th>
+							      <th scope="col">Nomor Mesin</th>
+							      <th scope="col">Type Mesin</th>
 							      <th scope="col">Created</th>
-							      <th scope="col">Updated</th>
 							      <th scope="col">Action</th>
 							    </tr>
 							  </thead>
@@ -76,7 +84,7 @@
 						</div>
 						<div class="card-footer">
 							<mark>Note: </mark>
-							<small class="text-danger">Data Role jika didelete maka data usersnya yang lain akan terhapus.</small>
+							<small class="text-danger">Data mesin jika didelete maka data yang lain akan terhapus.</small>
 						</div>
 					</div>
 			</div>
@@ -91,22 +99,22 @@
   <script src="<?=base_url('assets') ?>/backend/vendor/datatables/dataTables.bootstrap4.min.js"></script>
  	<script>
   	// global variable
-		var manageRoleTable;
+		var manageMachineTable;
 
 		$(document).ready(function() {
-			manageRoleTable = $("#dataTable-Role").DataTable({
-				"ajax": '<?php echo site_url('administrador/role/index')  ?>',
+			manageMachineTable = $("#dataTable-machine").DataTable({
+				"ajax": '<?php echo site_url('administrador/machine/get_machine')  ?>',
 				'orders': []
 			});	
 		});
 
-		$('#delete-role').prop("disabled", true)
-		$('#dataTable-Role').on('click', 'input.delete-checkbox', function() {
+		$('#delete-machine').prop("disabled", true)
+		$('#dataTable-machine').on('click', 'input.delete-checkbox', function() {
 			if ($(this).is(':checked')) {
-				$('#delete-role').prop("disabled", false);
+				$('#delete-machine').prop("disabled", false);
 			} else {
 				if ($('input.delete-checkbox').filter(':checked').length < 1) {
-					$('#delete-role').attr('disabled',true)
+					$('#delete-machine').attr('disabled',true)
 				}
 			}
 		})
@@ -114,23 +122,24 @@
 		// Handle click on "Select all" control
     $('#select_all').on('click', function() {
       // Get all rows with search applied
-      var rows = manageRoleTable.rows({ 'search': 'applied' }).nodes();
+      var rows = manageMachineTable.rows({ 'search': 'applied' }).nodes();
       // Check/uncheck checkboxes for all rows in the table
       $('input.delete-checkbox[type="checkbox"]', rows).prop('checked', this.checked)
     })
 
-    $('#delete-role').on('click', function() {
+    $('#delete-machine').on('click', function() {
 	    if( confirm("Are you sure you want to delete this?") ) {
-	      var data = {'roles[]' : []}
+	      var data = {'machine[]' : []}
 
-	      manageRoleTable.$(".delete-checkbox:checked").each(function() {
-	        data['roles[]'].push($(this).val())
+	      manageMachineTable.$(".delete-checkbox:checked").each(function() {
+	        data['machine[]'].push($(this).val())
 	      })
 
-	      $.post("<?=site_url('administrador/role/remove-all-role')?>", data)
+	      $.post("<?=site_url('administrador/machine/remove-machine')?>", data)
 		      .done(function( data ) {
 		        console.log(data)
-		        window.location.href = "<?=site_url('administrador/admin/role')?>"
+		        alert(data)
+		        window.location.href = "<?=site_url('administrador/machine')?>"
 		    })
 
 	   	} else {
@@ -138,8 +147,3 @@
 			}
 		})
 	</script>
-
-
-
-
-      

@@ -23,7 +23,7 @@
 				    	<div class="col-sm-4">
 				    		<div class="form-group">
 						    	<label for="notelp" class="text-primary">Username</label>
-						    	<input type="text" readonly id="username" name="username" placeholder="username" class="form-control">
+						    	<input type="text" id="username" name="username" class="form-control">
 						    	<?=form_error('username', '<small class="text-danger">', '</small>') ?>
 						    </div>
 				    	</div>
@@ -48,11 +48,12 @@
 				    	<textarea name="address" placeholder="Alamat Lengkap" id="address" class="form-control"></textarea>
 				    	<?=form_error('address', '<small class="text-danger">', '</small>') ?>
 				    </div>
-					  <div class="card-footer">
-					    <a href="<?=site_url('administrador/admin') ?>" class="btn btn-secondary">Batal</a>
-					    <button class="btn btn-primary" type="submit">Update Admin</button>
-				  	</div>
+					  
 				  </div>
+				  <div class="card-footer">
+				    <a href="<?=site_url('administrador/admin') ?>" class="btn btn-secondary">Batal</a>
+				    <button class="btn btn-primary" type="submit">Update Admin</button>
+			  	</div>
 				</div>
 			</div>
 			<div class="col-sm-3">

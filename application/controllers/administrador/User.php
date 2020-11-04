@@ -10,10 +10,9 @@ class User extends CI_Controller {
 
 	public function index()
 	{
-		is_logged_in();
 		$data['title'] = 'My Profile';
-		$data['user'] = $this->db->get_where('users', 
-			['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
 
 		$this->load->view('backend/templates/header', $data);
 		$this->load->view('backend/templates/sidebar', $data);
@@ -24,10 +23,9 @@ class User extends CI_Controller {
 
 	public function changePassword()
 	{
-		is_auth();
 		$data['title'] = 'Change <strong>Password</strong>';
-		$data['user'] = $this->db->get_where('users', 
-			['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
 
 		$this->form_validation->set_rules('current_password', 'Current Password', 'required|trim');
 		$this->form_validation->set_rules('new_password1', 'New Password', 'required|trim|min_length[3]|matches[new_password2]');
@@ -54,8 +52,8 @@ class User extends CI_Controller {
 
 					$password_hash = password_hash($new_password, PASSWORD_DEFAULT);
 					$this->db->set('password', $password_hash);
-					$this->db->where('email', $this->session->userdata('email'));
-					$this->db->update('users');
+					$this->db->where('username', $this->session->userdata('username'));
+					$this->db->update('user');
 
 					$this->session->set_flashdata('message', '<div class="alert alert-success">Password changed!</div>');
 					redirect('administrador/user/change-password');
@@ -67,14 +65,11 @@ class User extends CI_Controller {
 
 	public function edit($value='')
 	{
-		is_auth();
 		$data['title'] = 'Edit <strong>Profile</strong>';
-		$data['user'] = $this->db->get_where('users', 
-			['email' => $this->session->userdata('email')])->row_array();
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
 
-		$data['cities'] = $this->db->get('cities')->result_array();
-
-		$this->form_validation->set_rules('name', 'Name', 'required|trim');
+		$this->form_validation->set_rules('name', 'Fullname', 'required|trim');
 
 		if($this->form_validation->run() === false) :
 			$this->load->view('backend/templates/header', $data);
@@ -84,18 +79,10 @@ class User extends CI_Controller {
 			$this->load->view('backend/templates/footer');
 		else:
 			$name = $this->input->post('name');
-			$email = $this->input->post('email');
+			$username = $this->input->post('username');
 
-			if($this->session->userdata('role_id') == 3) :
-				$number_phone = $this->input->post('number_phone');
-				$city_id = $this->input->post('city_id');
-				$gender = $this->input->post('gender');
-				$address = $this->input->post('address');
-			else:
-				$position = $this->input->post('position');
-				$bio = $this->input->post('bio');
-			endif;
-
+			$number_phone = $this->input->post('number_phone');
+			$address = $this->input->post('address');
 			$user_id = $data['user']['id'];
 
 			$upload_image = $_FILES['image']['name'];
@@ -107,16 +94,8 @@ class User extends CI_Controller {
 
 				$this->upload->initialize($config);
 				
-				if ($this->upload->do_upload('image')) :
-				    if($this->session->userdata('role_id') == 3) {
-				        $table = 'members';
-				    } else if ($this->session->userdata('role_id') == 2) {
-				        $table = 'trainers';
-				    } else {
-				        $table = 'administrator';
-				    }
-				    
-                    $avatar = $this->db->get_where($table, array('user_id' => $user_id))->row('avatar');
+				if ($this->upload->do_upload('image')) :				    
+          $avatar = $this->db->get_where('user_profile', array('user_id' => $user_id))->row('avatar');
                     
 					$oldImage = $avatar;
 					if($oldImage != 'default.png') :
@@ -132,25 +111,11 @@ class User extends CI_Controller {
 				endif;
 			endif;
 
-			if($this->session->userdata('role_id') == 3) {
-				$this->db->set('name', $name);
-				$this->db->set('city_id', $city_id);
-				$this->db->set('number_phone', $number_phone);
-				$this->db->set('gender', $gender);
-				$this->db->set('address', $address);
-				$this->db->where('user_id', $user_id);
-				$this->db->update('members');
-			} else if ($this->session->userdata('role_id') == 2) {
-				$this->db->set('name', $name);
-				$this->db->set('position', $position);
-				$this->db->set('bio', $bio);
-				$this->db->where('user_id', $user_id);
-				$this->db->update('trainers');
-			} else {
-				$this->db->set('name', $name);
-				$this->db->where('user_id', $user_id);
-				$this->db->update('administrator');
-			}
+			$this->db->set('number_phone', $number_phone);
+			$this->db->set('address', $address);
+			$this->db->set('updated_at', date('Y-m-d H:i:s'));
+			$this->db->where('user_id', $user_id);
+			$this->db->update('user_profile');
 
 			$this->session->set_flashdata('message', 
 				'<div class="alert alert-success">Your profile has been updated</div>');
