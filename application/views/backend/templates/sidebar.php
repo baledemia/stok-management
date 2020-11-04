@@ -84,7 +84,7 @@
   </div>
 
   <li class="nav-item">
-    <a class="nav-link" href="<?=site_url('administrador/role') ?>">
+    <a class="nav-link" href="<?=site_url('administrador/admin/role') ?>">
       <i class="fas fa-users-cog"></i>
       <span>Role</span></a>
   </li>

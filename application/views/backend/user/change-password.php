@@ -4,8 +4,18 @@
   <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
-    <p class="mb-4">Jagalah informasi akun sebaik mungkin</p>
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-2">
+      <div class="heading">
+        <h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
+    		<p>Jagalah informasi akun sebaik mungkin</p>
+      </div>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="./">User</a></li>
+        <li class="breadcrumb-item active">Change Password</li>
+      </ol>
+    </div>
+
 		<div class="row">
 			<div class="col-lg-6">
 				<?=$this->session->flashdata('message') ?>

@@ -21,15 +21,15 @@ class Role extends CI_Controller {
 
 			#button action
 			$buttons = '
-      	<a href="'.site_url('administrador/role/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
-      	<a href="'.site_url('administrador/role/delete/'.$value['id']).'" onclick="'.$confirm.'" class="badge badge-danger">Delete</a>
-			';
+	      	<a href="'.site_url('administrador/role/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
+	      	<a href="'.site_url('administrador/role/delete/'.$value['id']).'" onclick="'.$confirm.'" class="badge badge-danger">Delete</a>
+				';
 
-			$checkbox = '<div class="custom-control custom-checkbox small">
-        <input type="checkbox" name="roles[]" 
-        class="custom-control-input delete-checkbox" id="customCheck-'.$value['id'].'" value="'.$value['id'].'">
-        <label class="custom-control-label" for="customCheck-'.$value['id'].'"></label>
-      </div>';
+				$checkbox = '<div class="custom-control custom-checkbox small">
+	        <input type="checkbox" name="roles[]" 
+	        class="custom-control-input delete-checkbox" id="customCheck-'.$value['id'].'" value="'.$value['id'].'">
+	        <label class="custom-control-label" for="customCheck-'.$value['id'].'"></label>
+	      </div>';
 
 			$result['data'][$key] = array(
 				$no,
