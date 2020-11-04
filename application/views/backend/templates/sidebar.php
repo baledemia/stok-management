@@ -32,20 +32,46 @@
       </div>
     </div>
   </li>
+  
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterGeneral"
+      aria-expanded="true" aria-controls="collapseMasterCable">
+      <i class="fas fa-database"></i>
+      <span>Data General</span>
+    </a>
+    <div id="collapseMasterGeneral" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/supplier') ?>">Supplier</a>
+        <a class="collapse-item" href="<?=site_url('administrador/color') ?>">Color</a>
+        <a class="collapse-item" href="<?=site_url('administrador/size') ?>">Size</a>
+      </div>
+    </div>
+  </li>
 
-   <li class="nav-item">
+  <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterCable"
       aria-expanded="true" aria-controls="collapseMasterCable">
       <i class="fas fa-database"></i>
-      <span>Master Kabel</span>
+      <span>Master Cable</span>
     </a>
     <div id="collapseMasterCable" class="collapse" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="<?=site_url('administrador/color') ?>">Color</a>
         <a class="collapse-item" href="<?=site_url('administrador/type') ?>">Type</a>
-        <a class="collapse-item" href="<?=site_url('administrador/size') ?>">Size</a>
         <a class="collapse-item" href="<?=site_url('administrador/cable') ?>">Local Cable</a>
-        <a class="collapse-item" href="<?=site_url('administrador/cable/import') ?>">Import Cable</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImportCable"
+      aria-expanded="true" aria-controls="collapseImportCable">
+      <i class="fas fa-database"></i>
+      <span>Master Import Cable</span>
+    </a>
+    <div id="collapseImportCable" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/merk') ?>">Merk</a>
+        <a class="collapse-item" href="<?=site_url('administrador/cable-import') ?>">Import Cable</a>
       </div>
     </div>
   </li>
