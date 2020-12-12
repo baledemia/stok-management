@@ -53,4 +53,12 @@ class Basic_model extends CI_Model {
 		$this->db->delete($table);
 	}
 
+	public function save_batch($data, $table){
+	  return $this->db->insert_batch($table, $data);  
+	}
+
+	public function save($data, $table){
+		$this->db->insert($table, $data);
+	}
+
 }

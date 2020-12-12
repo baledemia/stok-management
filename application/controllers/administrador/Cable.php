@@ -16,14 +16,18 @@ class Cable extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
+		$data['category']	= $this->db->get('cable_category')->result();
 		$data['type']		= $this->db->get('cable_type')->result();
 		$data['size']		= $this->db->get('cable_size')->result();
 		$data['supplier']	= $this->db->get('supplier')->result();
+		$data['color']		= $this->db->get('color')->result();
 
 		$this->form_validation->set_rules('type_cable_id', 'Cable Type', 'required');
 		$this->form_validation->set_rules('size_cable_id', 'Cable Size', 'required');
 		$this->form_validation->set_rules('kode_supplier', 'Supplier', 'required');
 		$this->form_validation->set_rules('cable_length', 'Cable Length', 'required');
+		$this->form_validation->set_rules('color_id', 'Color', 'required');
+		$this->form_validation->set_rules('cable_category', 'Category', 'required');
 
 		if($this->form_validation->run() === false) :
 			$this->load->view('backend/templates/header', $data);
@@ -34,8 +38,10 @@ class Cable extends CI_Controller {
 		else:
 
 			$data = [
+				'cable_category' 	=> $this->input->post('cable_category', true),
 				'type_cable_id' 	=> $this->input->post('type_cable_id', true),
 				'size_cable_id' 	=> $this->input->post('size_cable_id', true),
+				'color_id' 			=> $this->input->post('color_id', true),
 				'kode_supplier' 	=> $this->input->post('kode_supplier', true),
 				'cable_length' 		=> $this->input->post('cable_length', true),
 			];
@@ -51,10 +57,12 @@ class Cable extends CI_Controller {
 	{
 		$result = array('data' => array());
 
-		$this->db->select("cable_type_size.*, cable_size.size_name, cable_type.type_name, supplier.name");
+		$this->db->select("cable_type_size.*, cable_size.size_name, cable_type.type_name, supplier.name, color.color_name, cable_category.name_category");
 		$this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
 		$this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
 		$this->db->join('supplier', 'supplier.id = cable_type_size.kode_supplier');
+		$this->db->join('color', 'color.id = cable_type_size.color_id');
+		$this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
 		$data = $this->db->get('cable_type_size')->result_array();
 		// echo $this->db->last_query();die;
 		$no = 1;
@@ -68,8 +76,10 @@ class Cable extends CI_Controller {
 
 			$result['data'][$key] = array(
 				$no,
+				$value['name_category'],
 				$value['type_name'],
 				$value['size_name'],
+				$value['color_name'],
 				$value['name'],
 				$value['cable_length'],
 				tgl_indo($value['created_at']),
@@ -99,11 +109,16 @@ class Cable extends CI_Controller {
 		$data['type']		= $this->db->get('cable_type')->result();
 		$data['size']		= $this->db->get('cable_size')->result();
 		$data['supplier']	= $this->db->get('supplier')->result();
+		$data['color']		= $this->db->get('color')->result();
+		$data['category']	= $this->db->get('cable_category')->result();
 
 		$this->form_validation->set_rules('type_cable_id', 'Cable Type', 'required');
 		$this->form_validation->set_rules('size_cable_id', 'Cable Size', 'required');
 		$this->form_validation->set_rules('kode_supplier', 'Supplier', 'required');
 		$this->form_validation->set_rules('cable_length', 'Cable Length', 'required');
+		$this->form_validation->set_rules('color_id', 'Color', 'required');
+		$this->form_validation->set_rules('cable_category', 'Category', 'required');
+
 
 		if($this->form_validation->run() === false) :
 			$this->load->view('backend/templates/header', $data);
@@ -113,8 +128,10 @@ class Cable extends CI_Controller {
 			$this->load->view('backend/templates/footer');
 		else:
 			$data = [
+				'cable_category' 	=> $this->input->post('cable_category', true),
 				'type_cable_id' 	=> $this->input->post('type_cable_id', true),
 				'size_cable_id' 	=> $this->input->post('size_cable_id', true),
+				'color_id'		 	=> $this->input->post('color_id', true),
 				'kode_supplier' 	=> $this->input->post('kode_supplier', true),
 				'cable_length' 		=> $this->input->post('cable_length', true),
 				'updated_at' 		=> date("Y-m-d H:i:s")

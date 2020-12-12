@@ -58,6 +58,7 @@
     </a>
     <div id="collapseMasterCable" class="collapse" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/category') ?>">Category</a>
         <a class="collapse-item" href="<?=site_url('administrador/type') ?>">Type</a>
         <a class="collapse-item" href="<?=site_url('administrador/cable') ?>">Local Cable</a>
       </div>
@@ -77,6 +78,70 @@
       </div>
     </div>
   </li>
+
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    Transaction
+  </div>
+  
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaksi"
+      aria-expanded="true" aria-controls="collapseTransaksi">
+      <i class="fas fa-table"></i>
+      <span>Stock</span>
+    </a>
+    <div id="collapseTransaksi" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/cable-stock') ?>">Factory Cable Stock</a>
+        <a class="collapse-item" href="<?=site_url('administrador/office-cable-stock') ?>">Office Cable Stock</a>
+        <a class="collapse-item" href="<?=site_url('administrador/import-cable-stock') ?>">Import Cable Stock</a>
+      </div>
+    </div>
+  </li>
+  
+  <!-- <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterGeneral"
+      aria-expanded="true" aria-controls="collapseMasterCable">
+      <i class="fas fa-table"></i>
+      <span>Data General</span>
+    </a>
+    <div id="collapseMasterGeneral" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/supplier') ?>">Supplier</a>
+        <a class="collapse-item" href="<?=site_url('administrador/color') ?>">Color</a>
+        <a class="collapse-item" href="<?=site_url('administrador/size') ?>">Size</a>
+        <a class="collapse-item" href="<?=site_url('administrador/warehouse') ?>">Warehouse</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterCable"
+      aria-expanded="true" aria-controls="collapseMasterCable">
+      <i class="fas fa-database"></i>
+      <span>Master Cable</span>
+    </a>
+    <div id="collapseMasterCable" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/type') ?>">Type</a>
+        <a class="collapse-item" href="<?=site_url('administrador/cable') ?>">Local Cable</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImportCable"
+      aria-expanded="true" aria-controls="collapseImportCable">
+      <i class="fas fa-database"></i>
+      <span>Master Import Cable</span>
+    </a>
+    <div id="collapseImportCable" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/merk') ?>">Merk</a>
+        <a class="collapse-item" href="<?=site_url('administrador/cable-import') ?>">Import Cable</a>
+      </div>
+    </div>
+  </li> -->
 
   <hr class="sidebar-divider">
   <div class="sidebar-heading">
