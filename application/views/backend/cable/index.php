@@ -22,49 +22,74 @@
 			      endif ?>
 
 						<form action="<?=$url ?>" method="POST">
-							<div class="form-group">
-					    		<label for="kode_cable">Type Cable</label>
-					    		<select class="form-control" name="type_cable_id" id="type_cable_id">
-					    			<option value="">-- Choose Type --</option>
-					    			<?php foreach($type as $t) { ?>
-					    				<option value="<?=$t->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->type_cable_id == $t->id) { ?> selected <?php } ?>><?=$t->type_name ?></option>
-					    			<?php } ?>
-					    		</select>
-				      		<?=form_error('type_cable_id', '<small class="text-danger">', '</small>') ?>
-					    	</div>
+							<div class="row">
+								<div class="col-md-4 mb-3">
+									<label for="">Cable Category</label>
+									<select name="cable_category" class="form-control">
+										<option value="">-- Choose Category --</option>
+										<?php foreach($category as $cat) : ?>
+											<option value="<?=$cat->id_cat ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->cable_category == $cat->id_cat) { ?> selected <?php } ?>><?=$cat->name_category ?></option>
+										<?php endforeach; ?>
+									</select>
+								<?=form_error('cable_category', '<small class="text-danger">', '</small>') ?>
+								</div>
+								<div class="col-md-4 mb-3">
+						    		<label for="kode_cable">Type Cable</label>
+						    		<select class="form-control" name="type_cable_id" id="type_cable_id">
+						    			<option value="">-- Choose Type --</option>
+						    			<?php foreach($type as $t) { ?>
+						    				<option value="<?=$t->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->type_cable_id == $t->id) { ?> selected <?php } ?>><?=$t->type_name ?></option>
+						    			<?php } ?>
+						    		</select>
+					      		<?=form_error('type_cable_id', '<small class="text-danger">', '</small>') ?>
+						    	</div>
 
-					    	<div class="form-group">
-					    		<label for="kode_cable">Size Cable</label>
-					    		<select class="form-control" name="size_cable_id" id="size_cable_id">
-					    			<option value="">-- Choose Size --</option>
-					    			<?php foreach($size as $s) { ?>
-					    				<option value="<?=$s->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->size_cable_id == $s->id) { ?> selected <?php } ?>><?=$s->size_name ?></option>
-					    			<?php } ?>
-					    		</select>
-				      		<?=form_error('size_cable_id', '<small class="text-danger">', '</small>') ?>
-					    	</div>
+						    	<div class="col-md-4 mb-3">
+						    		<label for="kode_cable">Size Cable</label>
+						    		<select class="form-control" name="size_cable_id" id="size_cable_id">
+						    			<option value="">-- Choose Size --</option>
+						    			<?php foreach($size as $s) { ?>
+						    				<option value="<?=$s->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->size_cable_id == $s->id) { ?> selected <?php } ?>><?=$s->size_name ?></option>
+						    			<?php } ?>
+						    		</select>
+					      		<?=form_error('size_cable_id', '<small class="text-danger">', '</small>') ?>
+						    	</div>
 
-					    	<div class="form-group">
-					    		<label for="kode_cable">Supplier</label>
-					    		<select class="form-control" name="kode_supplier" id="kode_supplier">
-					    			<option value="">-- Choose Supplier --</option>
-					    			<?php foreach($supplier as $sup) { ?>
-					    				<option value="<?=$sup->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->kode_supplier == $sup->id) { ?> selected <?php } ?>><?=$sup->kode_supplier." - ".$sup->name ?></option>
-					    			<?php } ?>
-					    		</select>
-				      		<?=form_error('kode_supplier', '<small class="text-danger">', '</small>') ?>
-					    	</div>
+						    	<div class="col-md-4 mb-3">
+						    		<label for="kode_cable">Color</label>
+						    		<select class="form-control" name="color_id" id="color_id">
+						    			<option value="">-- Choose Color --</option>
+						    			<?php foreach($color as $clr) { ?>
+						    				<option value="<?=$clr->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->color_id == $clr->id) { ?> selected <?php } ?>><?=$clr->color_name ?></option>
+						    			<?php } ?>
+						    		</select>
+					      		<?=form_error('color_id', '<small class="text-danger">', '</small>') ?>
+						    	</div>
 
-					    	<div class="form-group">
-					    		<label for="cable_length">Cable Length</label>
-					    		<input type="text" class="form-control" name="cable_length" id="cable_length" placeholder="Cable Length" value="<?=($this->uri->segment(3) == 'edit') ? $cable->cable_length : set_value('cable_length') ?>">
-					      		<?=form_error('cable_length', '<small class="text-danger">', '</small>') ?>
-					    	</div>
-							
-					      	<button class="btn btn-primary" type="submit">Save changes</button>
-						    <?php if($this->uri->segment(3) == 'edit') : ?>
-						      <a href="<?=site_url('administrador/cable') ?>" class="btn btn-default"> Batal</a>
-					    	<?php endif ?>
+						    	<div class="col-md-4 mb-3">
+						    		<label for="kode_cable">Supplier</label>
+						    		<select class="form-control" name="kode_supplier" id="kode_supplier">
+						    			<option value="">-- Choose Supplier --</option>
+						    			<?php foreach($supplier as $sup) { ?>
+						    				<option value="<?=$sup->id ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->kode_supplier == $sup->id) { ?> selected <?php } ?>><?=$sup->kode_supplier." - ".$sup->name ?></option>
+						    			<?php } ?>
+						    		</select>
+					      		<?=form_error('kode_supplier', '<small class="text-danger">', '</small>') ?>
+						    	</div>
+
+						    	<div class="col-md-4 mb-3">
+						    		<label for="cable_length">Cable Length</label>
+						    		<input type="text" class="form-control" name="cable_length" id="cable_length" placeholder="Cable Length" value="<?=($this->uri->segment(3) == 'edit') ? $cable->cable_length : set_value('cable_length') ?>">
+						      		<?=form_error('cable_length', '<small class="text-danger">', '</small>') ?>
+						    	</div>
+								
+								<div class="col-md-2">
+						      		<button class="btn btn-primary" type="submit">Save changes</button>
+								</div>
+							    <?php if($this->uri->segment(3) == 'edit') : ?>
+							      <a href="<?=site_url('administrador/cable') ?>" class="btn btn-default"> Batal</a>
+						    	<?php endif ?>
+							</div>
 						</form>
 					</div>
 				</div>
@@ -78,8 +103,10 @@
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
+							      <th scope="col">Category</th>
 							      <th scope="col">Cable Type</th>
 							      <th scope="col">Cable Size</th>
+							      <th scope="col">Color</th>
 							      <th scope="col">Supplier</th>
 							      <th scope="col">Cable Length</th>
 							      <th scope="col">Created At</th>
