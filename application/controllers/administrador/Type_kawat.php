@@ -57,12 +57,12 @@ class Type_kawat extends CI_Controller {
       </div>';
 
 			$result['data'][$key] = array(
-				$no,
-				$checkbox,
-				$value['type_name'],
-				$value['created_at'],
-				$value['updated_at'] ? $value['updated_at'] : 'NULL',
-				$buttons
+				'id' => $no,
+				'checkbox' => $checkbox,
+				'type_name' => $value['type_name'],
+				'created_at' => $value['created_at'],
+				'updated_at' => $value['updated_at'] ? $value['updated_at'] : 'NULL',
+				'action' => $buttons
 			);
 
 			$no++;

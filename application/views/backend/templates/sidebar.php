@@ -7,8 +7,49 @@
     </div>
     <div class="sidebar-brand-text mx-3">PT. Sukses Setia</div>
   </a>
-  <hr class="sidebar-divider my-0">
-  <li class="nav-item">
+
+  <hr class="sidebar-divider mt-0">
+
+  <?php $role_id = $this->session->userdata('role_id');
+
+    $queryMenu = "SELECT menu.id, menu.menu_name
+      FROM menu JOIN user_access_menu
+      ON menu.id = user_access_menu.menu_id
+      WHERE user_access_menu.role_id = $role_id
+      ORDER BY menu.numrow ASC";
+
+    $menus = $this->db->query($queryMenu)->result_array() ?>
+
+  <!-- Heading -->
+  <?php foreach($menus as $menu) : ?>
+    <div class="sidebar-heading">
+      <?=$menu['menu_name'] ?>
+    </div>
+
+    <!-- Sub Menu -->
+    <?php $menu_id = $menu['id'];
+    $querySubMenu = "SELECT *
+        FROM submenu
+        WHERE menu_id = $menu_id 
+        AND active = 1";
+
+    $submenus = $this->db->query($querySubMenu)->result_array(); ?>
+
+    <?php foreach($submenus as $submenu) : ?>
+      <li class="nav-item <?=($title == $submenu['title'] ? 'active' : '') ?>">
+        
+        <?php $link = $submenu['url']; ?>
+
+        <a class="nav-link" href="<?=site_url($link) ?>">
+          <i class="<?=$submenu['icon'] ?>"></i>
+          <span><?=$submenu['title'] ?></span></a>
+      </li>
+    <?php endforeach ?>
+    <!-- Divider -->
+    <hr class="sidebar-divider mt-3">
+  <?php endforeach ?>
+
+  <!-- <li class="nav-item">
     <a class="nav-link" href="index.html">
     <i class="fas fa-fw fa-tachometer-alt"></i>
     <span>Dashboard</span></a>
@@ -37,7 +78,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterGeneral"
       aria-expanded="true" aria-controls="collapseMasterCable">
-      <i class="fas fa-database"></i>
+      <i class="fas fa-table"></i>
       <span>Data General</span>
     </a>
     <div id="collapseMasterGeneral" class="collapse" data-parent="#accordionSidebar">
@@ -53,7 +94,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMasterCable"
       aria-expanded="true" aria-controls="collapseMasterCable">
-      <i class="fas fa-database"></i>
+      <i class="fas fa-ethernet"></i>
       <span>Master Cable</span>
     </a>
     <div id="collapseMasterCable" class="collapse" data-parent="#accordionSidebar">
@@ -67,7 +108,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImportCable"
       aria-expanded="true" aria-controls="collapseImportCable">
-      <i class="fas fa-database"></i>
+      <i class="fas fa-file-import"></i>
       <span>Master Import Cable</span>
     </a>
     <div id="collapseImportCable" class="collapse" data-parent="#accordionSidebar">
@@ -85,8 +126,8 @@
 
   <li class="nav-item">
     <a class="nav-link" href="<?=site_url('administrador/admin/role') ?>">
-      <i class="fas fa-users-cog"></i>
-      <span>Role</span></a>
+    <i class="fas fa-users-cog"></i>
+    <span>Role</span></a>
   </li>
 
   <li class="nav-item">
@@ -95,11 +136,39 @@
       <span>User</span></a>
   </li>
 
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    Menu Management
+  </div>
+
   <li class="nav-item">
     <a class="nav-link" href="<?=site_url('administrador/menu') ?>">
-      <i class="far fa-calendar-minus"></i>
+    <i class="fas fa-fw fa-folder"></i>
       <span>Menu</span></a>
   </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+    <i class="fas fa-fw fa-folder-open"></i>
+      <span>Sub Menu</span></a>
+  </li>
+
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    Order
+  </div>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?=site_url('administrador/order-stok') ?>">
+    <i class="fas fa-fw fa-book-open"></i>
+    <span>Transaksi Baru</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="<?=site_url('administrador/material-stok') ?>">
+    <i class="fas fa-fw fa-hdd"></i>
+    <span>Laporan Material</span></a>
+  </li> -->
 
   <hr class="sidebar-divider">
   <li class="nav-item">

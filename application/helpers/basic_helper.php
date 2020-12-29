@@ -11,7 +11,7 @@ function is_logged_in()
 		$base_url = current_url();
 		$url = str_replace(base_url(), "", $base_url);
 
-		$queryMenu = $ci->db->get_where('user_submenu', [
+		$queryMenu = $ci->db->get_where('submenu', [
 		 	'url' => $url
 		])->row_array();
 
@@ -46,7 +46,7 @@ function is_user()
 function is_auth()
 {
 	$ci = get_instance();
-	if(!$ci->session->userdata('email')) {
+	if(!$ci->session->userdata('username')) {
 		redirect('administrador');
 	}
 }
@@ -83,6 +83,19 @@ function tgl_indo($tanggal){
  
 	return substr($pecahkan[2], 0, 2) . ' ' . $bulan[(int)$pecahkan[1] ] . ' ' . $pecahkan[0];
 }
+ 
+function random($panjang_karakter)   
+{   
+	$karakter = '1234567890';
+
+	$string = '';   
+	for($i = 0; $i < $panjang_karakter; $i++) {   
+		$pos = rand(0, strlen($karakter)-1);   
+		$string .= $pos;   
+	}   
+
+	return $string;   
+}   
 
 
 ?>

@@ -51,6 +51,46 @@ class Admin extends CI_Controller {
 		endif;
 	}
 
+	public function roleAccess($role_id)
+	{
+		$data['title'] = 'Role <strong>Access</strong>';
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
+
+		$data['role'] = $this->db->get_where('user_role', ['id' => $role_id])->row_array();
+		if(!$data['role']) redirect("administrador/admin");
+
+		$this->db->where('id !=', 1);
+		$data['menus'] = $this->db->get('menu')->result_array();
+
+		$this->load->view('backend/templates/header', $data);
+		$this->load->view('backend/templates/sidebar', $data);
+		$this->load->view('backend/templates/topbar', $data);
+		$this->load->view('backend/admin/role-access', $data);
+		$this->load->view('backend/templates/footer');
+	}
+
+	public function changeAccess()
+	{
+		$menu_id = $this->input->post('menuId');
+		$role_id = $this->input->post('roleId');
+
+		$data = [
+			'role_id' => $role_id,
+			'menu_id' => $menu_id
+		];
+
+		$result = $this->db->get_where('user_access_menu', $data);
+		if($result->num_rows() < 1) :
+			$this->db->insert('user_access_menu', $data);
+		else:
+			$this->db->delete('user_access_menu', $data);
+		endif;
+
+		$this->session->set_flashdata('message', 
+			'<div class="alert alert-success">Access changed</div>');
+	}
+
 	public function store()
 	{
 		$data['title'] = 'Tambah <strong>Admin Web</strong>';

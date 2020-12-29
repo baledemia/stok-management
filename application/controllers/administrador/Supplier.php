@@ -94,12 +94,6 @@ class Supplier extends CI_Controller {
 					<a href="'.site_url('administrador/supplier/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
 				';
 
-			if( $value['avatar'] == ''){
-				$image = '<img src="'.base_url('assets/backend/img/learning.jpg').'" width="90">';
-			}else{
-				$image = '<img src="'.base_url('assets/supplier/'.$value['avatar']).'" width="90">';
-			}
-
 			if( $value['active'] == 0){
 				$status = 'Not Active';
 			}else{
@@ -118,7 +112,6 @@ class Supplier extends CI_Controller {
 				$value['kode_supplier'],
 				$value['name'],
 				$value['number_phone'],
-				$image,
 				$value['address'],
 				$status,
 				$date,
@@ -251,5 +244,15 @@ class Supplier extends CI_Controller {
 	{
 		$error = array('errors' => $this->upload->display_errors()); #show errornya
 		$this->session->set_flashdata('error-upload', '<div class="alert alert-danger">'.$error['errors'].'</div>');
+	}
+
+	public function getKodeSupplier($id)
+	{
+		if($id > 0) : 
+			$this->db->select('kode_supplier');
+			$resultSupplier = $this->db->get_where("supplier", ['id' => $id])->row_array();
+
+			echo json_encode($resultSupplier);
+		endif;
 	}
 }

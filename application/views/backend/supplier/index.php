@@ -1,4 +1,4 @@
-<link href="<?=base_url('assets') ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="<?=base_url('assets') ?>/backend/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Begin Page Content -->
   <div class="container-fluid">
 
@@ -82,7 +82,6 @@
 							      <th scope="col">Code</th>
 							      <th scope="col">Name</th>
 							      <th scope="col">Phone</th>
-							      <th scope="col">Avatar</th>
 							      <th scope="col">Address</th>
 							      <th scope="col">Status</th>
 							      <th scope="col">Updated At</th>

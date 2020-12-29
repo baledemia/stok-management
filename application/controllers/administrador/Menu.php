@@ -140,7 +140,7 @@ class Menu extends CI_Controller {
 				'title' => $this->input->post('title'),
 				'url' => $this->input->post('url'),
 				'icon' => $this->input->post('icon'),
-				'is_active' => $this->input->post('is_active')
+				'active' => $this->input->post('is_active')
 			];
 
 			$createSubMenu = $this->datatable->create('submenu', $data); 
@@ -184,7 +184,7 @@ class Menu extends CI_Controller {
 			</div>
 			';
 
-			if($value['is_active'] == 1) :
+			if($value['active'] == 1) :
 				$active = '<span class="badge badge-success">Yes</span>';
 			else:
 				$active = '<span class="badge badge-danger">No</span>';
@@ -193,7 +193,7 @@ class Menu extends CI_Controller {
 			$result['data'][$key] = array(
 				$no,
 				$value['title'],
-				$value['menu'],
+				$value['menu_name'],
 				$value['url'],
 				$value['icon'],
 				$active,
@@ -209,7 +209,7 @@ class Menu extends CI_Controller {
 	public function getSelectedSubMenuInfo($id) 
 	{
 		if($id) :
-			$data = $this->menu->getSubMenu($id);
+			$data = $this->basic->getSubMenu($id);
 			echo json_encode($data);
 		endif;
 	}
@@ -232,7 +232,7 @@ class Menu extends CI_Controller {
 					'title' => $this->input->post('title'),
 					'url' => $this->input->post('url'),
 					'icon' => $this->input->post('icon'),
-					'is_active' => $this->input->post('is_active'),
+					'active' => $this->input->post('is_active'),
 					'updated_at' => date('Y-m-d H:i:s') 
 				];
 

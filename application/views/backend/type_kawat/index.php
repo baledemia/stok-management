@@ -1,4 +1,14 @@
+	<style>
+		td.details-control {
+	    background: url('<?=base_url() ?>assets/backend/img/details_open.png') no-repeat center center;
+	    cursor: pointer
+		}
 
+		tr.details td.details-control {
+		  background: url('<?=base_url() ?>assets/backend/img/details_close.png') no-repeat center center;
+		}
+
+	</style>
 	<link href="<?=base_url('assets') ?>/backend/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Begin Page Content -->
   <div class="container-fluid">
@@ -59,6 +69,7 @@
 							<table class="table" id="dataTable-type-kawat">
 							  <thead>
 							    <tr>
+							      <th scope="col"></th>
 							      <th scope="col">#</th>
 							      <th width="20">
 							      	<div class="custom-control custom-checkbox small">
@@ -79,7 +90,7 @@
 							<small class="text-danger">Data type kawat jika didelete maka data order stok akan terhapus.</small>
 						</div>
 					</div>
-			</div>
+				</div>
 		</div>
   </div>
 </div>
@@ -96,46 +107,99 @@
 		$(document).ready(function() {
 			manageTypeKawatTable = $("#dataTable-type-kawat").DataTable({
 				"ajax": '<?php echo site_url('administrador/type-kawat/getTypeKawat')  ?>',
+				 "columns": [
+          {
+            "class": "details-control",
+            "orderable": false,
+            "data": null,
+            "defaultContent": ""
+          },
+          { "data": 'id' },
+          { "data": 'checkbox' },
+          { "data": 'type_name' },
+          { "data": 'created_at' },
+          { "data": 'updated_at' },
+          { "data": 'action' }
+        ],
 				'orders': []
-			});	
-		});
+			})
 
-		$('#delete-type-kawat').prop("disabled", true)
-		$('#dataTable-type-kawat').on('click', 'input.delete-checkbox', function() {
-			if ($(this).is(':checked')) {
-				$('#delete-type-kawat').prop("disabled", false);
-			} else {
-				if ($('input.delete-checkbox').filter(':checked').length < 1) {
-					$('#delete-type-kawat').attr('disabled',true)
+			function format ( d ) {
+				return 'Type Kawat: '+d.type_name+
+				'Updated: '+d.created_at+'<br>'+
+				'The child row can contain any data you wish, including links, images, inner tables etc.';
+			}
+
+			// Array to track the ids of the details displayed rows
+	    var detailRows = [];
+	 
+	    $('#dataTable-type-kawat tbody').on('click', 'tr td.details-control', function () {
+	      var tr = $(this).closest('tr')
+	      var row = manageTypeKawatTable.row( tr )
+	      var idx = $.inArray( tr.attr('id'), detailRows )
+
+	      if ( row.child.isShown() ) {
+	        tr.removeClass( 'details' )
+	        row.child.hide()
+
+	        // Remove from the 'open' array
+	        detailRows.splice( idx, 1 )
+	      }
+	      else {
+	        tr.addClass( 'details' );
+	        row.child( format( row.data() ) ).show()
+
+	        // Add to the 'open' array
+	        if ( idx === -1 ) {
+	          detailRows.push(tr.attr('id') )
+	        }
+	      }
+	    })
+	 
+	    // On each draw, loop over the `detailRows` array and show any child rows
+	    manageTypeKawatTable.on('draw', function () {
+				$.each( detailRows, function (i, id) {
+				  $('#'+id+' td.details-control').trigger('click')
+				})
+	    })
+
+			$('#delete-type-kawat').prop("disabled", true)
+			$('#dataTable-type-kawat').on('click', 'input.delete-checkbox', function() {
+				if ($(this).is(':checked')) {
+					$('#delete-type-kawat').prop("disabled", false);
+				} else {
+					if ($('input.delete-checkbox').filter(':checked').length < 1) {
+						$('#delete-type-kawat').attr('disabled',true)
+					}
 				}
-			}
-		})
+			})
 
-		// Handle click on "Select all" control
-    $('#select_all').on('click', function() {
-      // Get all rows with search applied
-      var rows = manageTypeKawatTable.rows({ 'search': 'applied' }).nodes();
-      // Check/uncheck checkboxes for all rows in the table
-      $('input.delete-checkbox[type="checkbox"]', rows).prop('checked', this.checked)
-    })
+			// Handle click on "Select all" control
+	    $('#select_all').on('click', function() {
+	      // Get all rows with search applied
+	      var rows = manageTypeKawatTable.rows({ 'search': 'applied' }).nodes();
+	      // Check/uncheck checkboxes for all rows in the table
+	      $('input.delete-checkbox[type="checkbox"]', rows).prop('checked', this.checked)
+	    })
 
-    $('#delete-type-kawat').on('click', function() {
-	    if( confirm("Are you sure you want to delete this?") ) {
-	      var data = {'type_kawat[]' : []}
+	    $('#delete-type-kawat').on('click', function() {
+		    if( confirm("Are you sure you want to delete this?") ) {
+		      var data = {'type_kawat[]' : []}
 
-	      manageTypeKawatTable.$(".delete-checkbox:checked").each(function() {
-	        data['type_kawat[]'].push($(this).val())
-	      })
+		      manageTypeKawatTable.$(".delete-checkbox:checked").each(function() {
+		        data['type_kawat[]'].push($(this).val())
+		      })
 
-	      $.post("<?=site_url('administrador/type_kawat/remove-all-type-kawat')?>", data)
-		      .done(function( data ) {
-		        console.log(data)
-		        window.location.href = "<?=site_url('administrador/type_kawat')?>"
-		    })
+		      $.post("<?=site_url('administrador/type_kawat/remove-all-type-kawat')?>", data)
+			      .done(function( data ) {
+			        console.log(data)
+			        window.location.href = "<?=site_url('administrador/type_kawat')?>"
+			    })
 
-	   	} else {
-				return false;
-			}
+		   	} else {
+					return false;
+				}
+			})
 		})
 	</script>
 

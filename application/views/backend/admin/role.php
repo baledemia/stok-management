@@ -89,15 +89,18 @@
 	<!-- Page level plugins -->
   <script src="<?=base_url('assets') ?>/backend/vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="<?=base_url('assets') ?>/backend/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  
  	<script>
   	// global variable
 		var manageRoleTable;
 
 		$(document).ready(function() {
-			manageRoleTable = $("#dataTable-Role").DataTable({
-				"ajax": '<?php echo site_url('administrador/role/index')  ?>',
-				'orders': []
-			});	
+			manageRoleTable = $("#dataTable-Role").DataTable(
+				{
+					"ajax": '<?php echo site_url('administrador/role/index')  ?>',
+					'orders': []
+				}
+			);	
 		});
 
 		$('#delete-role').prop("disabled", true)

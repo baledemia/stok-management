@@ -11,15 +11,15 @@ class Basic_model extends CI_Model {
 	public function getSubMenu($id = null)
 	{
 		if($id) :
-			$sql = "SELECT user_submenu.*, user_menu.menu
-			FROM user_submenu JOIN user_menu
-			ON user_submenu.menu_id = user_menu.id WHERE user_submenu.id = '$id'";
+			$sql = "SELECT submenu.*, menu.menu_name
+			FROM submenu JOIN menu
+			ON submenu.menu_id = menu.id AND submenu.id = '$id'";
 
 			return $this->db->query($sql)->row_array();
 		else:
-			$sql = "SELECT user_submenu.*, user_menu.menu
-			FROM user_submenu JOIN user_menu
-			ON user_submenu.menu_id = user_menu.id";
+			$sql = "SELECT submenu.*, menu.menu_name
+			FROM submenu JOIN menu
+			ON submenu.menu_id = menu.id";
 
 		return $this->db->query($sql)->result_array();
 		endif;

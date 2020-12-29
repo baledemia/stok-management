@@ -21,6 +21,7 @@ class Role extends CI_Controller {
 
 			#button action
 			$buttons = '
+					<a href="'.site_url('administrador/admin/role-access/' .$value['id']).'" class="badge badge-warning">Access</a>
 	      	<a href="'.site_url('administrador/role/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
 	      	<a href="'.site_url('administrador/role/delete/'.$value['id']).'" onclick="'.$confirm.'" class="badge badge-danger">Delete</a>
 				';

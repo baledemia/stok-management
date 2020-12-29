@@ -29,7 +29,7 @@
 
 						<?php
 						if($this->uri->segment(3) == 'edit_menu') :
-			        $url = site_url('administrador/menu/show/'.$menu->id);
+			        $url = site_url('administrador/menu/edit_menu/'.$menu->id);
 			      else:
 			        $url = site_url('administrador/menu');
 			      endif ?>
