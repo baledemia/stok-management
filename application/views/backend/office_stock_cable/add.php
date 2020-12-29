@@ -36,6 +36,30 @@
   </div>
   <!-- /.container-fluid -->
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <?=form_open('administrador/office-cable-stock/retur') ?>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Alasan Retur</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+        	<textarea name="noted" class="form-control"></textarea>
+        	<input type="hidden" name="id_pending">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger">Retur</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+    <?=form_close(); ?>
+  </div>
+</div>
 
 <!-- Page level plugins -->
 <script src="<?=base_url('assets') ?>/backend/vendor/datatables/jquery.dataTables.min.js"></script>
@@ -50,7 +74,12 @@ $(document).ready(function() {
 		'orders': []
 	});	
 });
-</script>
 
+$(document).on('click', '#retur', function(){
+	var id = $(this).attr('data-id');
+
+	$("input[name=id_pending]").val(id);
+})
+</script>
 
       

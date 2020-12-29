@@ -49,11 +49,12 @@ class Office_cable_Stock extends CI_Controller {
 		// echo $this->db->last_query();die;
 		$no = 1;
 		foreach ($data as $key => $value) :
-			$confirm = "return confirm('Are you sure delete this data?')";
+			$confirm1 = "return confirm('Are you sure confirm this data?')";
+			$confirm2 = "return confirm('Are you sure return this data?')";
 
 			$buttons = '
-					<a href="'.site_url('administrador/office-cable-stock/confirm/'.$value['id']).'" class="badge badge-success">Confirm</a>
-					<a href="'.site_url('administrador/office-cable-stock/retur/'.$value['id']).'" class="badge badge-danger" onclick="'.$confirm.'">Retur</a>
+					<a href="'.site_url('administrador/office-cable-stock/confirm/'.$value['id']).'" class="badge badge-success" onclick="'.$confirm1.'">Confirm</a>
+					<a href="#" class="badge badge-danger" data-toggle="modal" data-target="#exampleModal" id="retur" data-id="'.$value['id'].'">Retur</a>
 				';
 
 			$result['data'][$key] = array(
@@ -74,6 +75,104 @@ class Office_cable_Stock extends CI_Controller {
 		endforeach;
 
 		echo json_encode($result);
+	}
+
+	public function confirm($id){
+		$getstock = $this->db->get_where('stock_pending', ['id' => $id])->row();
+
+		$cek = $this->db->get_where('cable_stok', ['cable_id' => $getstock->cable_type_id, 'warehouse_kode' => $getstock->warehouse_kode, 'length' => $getstock->length ])->row();
+
+		if($cek){
+			$total = $cek->stok + $getstock->qty;
+
+			$this->db->update('cable_stok', ['stok' => $total, 'updated_at' => date("Y-m-d H:i:s")], ['cable_id' => $getstock->cable_type_id, 'warehouse_kode' => $getstock->warehouse_kode, 'length' => $getstock->length]);
+		}else{
+			$new = [
+				'cable_id' => $getstock->cable_type_id,
+				'warehouse_kode' => $getstock->warehouse_kode,
+				'stok' => $getstock->qty,
+				'length' => $getstock->length
+			];
+
+			$save = [
+				'no_sj' 		=> $getstock->no_sj,
+				'cable_type_id' => $getstock->cable_type_id,
+				'length' 		=> $getstock->length,
+				'warehouse_code'=> $getstock->warehouse_kode,
+				'stok_in' 		=> $getstock->qty,
+				'noted' 		=> $getstock->noted,
+				'haspel' 		=> $getstock->haspel,
+				'tgl_order' 	=> $getstock->tgl_order
+			];
+
+			$out = [
+				'no_sj' 		=> $getstock->no_sj,
+				'cable_type_id' => $getstock->cable_type_id,
+				'length' 		=> $getstock->length,
+				'warehouse_code'=> 'PAB',
+				'stok_out' 		=> $getstock->qty,
+				'noted' 		=> $getstock->noted,
+				'haspel' 		=> $getstock->haspel,
+				'tgl_order' 	=> $getstock->tgl_order
+			];
+
+			// print_r($save);die;
+
+			$this->db->insert('cable_stok', $new);
+			$this->db->insert('cable_order', $save);
+			$this->db->insert('cable_order', $out);
+		}
+
+		$this->db->delete('stock_pending', ['id' => $id]);
+
+		$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! /div>');
+        redirect('administrador/office-cable-stock');
+	}
+
+	public function retur(){
+		$id 	= $this->input->post('id_pending');
+		$noted 	= $this->input->post('noted');
+
+		$getstock = $this->db->get_where('stock_pending', ['id' => $id])->row();
+
+		$cek = $this->db->get_where('cable_stok', ['cable_id' => $getstock->cable_type_id, 'warehouse_kode' => 'PAB', 'length' => $getstock->length ])->row();
+	
+	
+		$save = [
+			'no_sj' 		=> $getstock->no_sj,
+			'cable_type_id' => $getstock->cable_type_id,
+			'length' 		=> $getstock->length,
+			'warehouse_code'=> 'PAB',
+			'stok_in' 		=> $getstock->qty,
+			'noted' 		=> $noted,
+			'haspel' 		=> $getstock->haspel,
+			'tgl_order' 	=> $getstock->tgl_order
+		];
+
+		$retur = [
+			'no_sj' 		=> $getstock->no_sj,
+			'cable_type_id' => $getstock->cable_type_id,
+			'length' 		=> $getstock->length,
+			'warehouse_kode'=> 'PAB',
+			'qty' 			=> $getstock->qty,
+			'noted' 		=> $noted,
+			'haspel' 		=> $getstock->haspel,
+			'tgl_order' 	=> $getstock->tgl_order
+		];
+
+		// print_r($save);die;
+		$total = $cek->stok + $getstock->qty;
+
+		$this->db->update('cable_stok', ['stok' => $total, 'updated_at' => date("Y-m-d H:i:s")], ['cable_id' => $getstock->cable_type_id, 'warehouse_kode' => 'PAB', 'length' => $getstock->length]);
+
+		$this->db->insert('cable_order', $save);
+		
+		$this->db->insert('retur', $retur);
+
+		$this->db->delete('stock_pending', ['id' => $id]);
+
+		$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Return ! /div>');
+        redirect('administrador/office-cable-stock');
 	}
 
 	public function out_factory_stock()

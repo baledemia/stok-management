@@ -54,13 +54,14 @@ class Cable_Stock extends CI_Controller {
 			$index			= 0;
 
 			foreach($cable_type as $datatype){
-				$cek = $this->db->get_where('cable_stok', ['cable_id' => $datatype, 'warehouse_kode' => $warehouse])->row();
+				$cek = $this->db->get_where('cable_stok', ['cable_id' => $datatype, 'warehouse_kode' => $warehouse, 'length' => $length[$index]])->row();
 
 				array_push($data_detail, array(
 			    	'no_sj'			=> $no_sj,
 			    	'tgl_order'		=> $date,
 			    	'stok_in'		=> $qty[$index],
-					'cable_type_id'	=> $datatype,        
+					'cable_type_id'	=> $datatype, 
+					'warehouse_code' => 'PAB',       
 					'length'		=> $length[$index],  
 					'haspel'		=> $haspel[$index],
 					'noted'			=> $noted[$index]
@@ -80,6 +81,7 @@ class Cable_Stock extends CI_Controller {
 					$data_stock = [
 			     		'cable_id'		=> $datatype,
 			     		'warehouse_kode'=> $warehouse,
+			     		'length'		=> $length[$index],
 			     		'stok'			=> $qty[$index]
 			     	];
 
@@ -149,11 +151,14 @@ class Cable_Stock extends CI_Controller {
 					'noted'			=> $noted[$index],
 					'operator'		=> $this->session->userdata('username')
 		     	));
-			    
+
+		     	$cek = $this->db->get_where('cable_stok', ['cable_id' => $datatype, 'warehouse_kode' => 'PAB', 'length' => $length[$index]])->row('stok');
+		     	$sisa = $cek - $qty[$index];
+
+				$this->db->update('cable_stok', ['stok' => $sisa, 'updated_at' => date("Y-m-d H:i:s")], ['cable_id' => $datatype, 'warehouse_kode' => 'PAB']);
+
             	$index++; 
             }
-
-            // print_r($data_detail);die;
 
         	$this->basic->save_batch($data_detail, 'stock_pending');
 

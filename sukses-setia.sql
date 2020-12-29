@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 12 Des 2020 pada 15.46
+-- Waktu pembuatan: 29 Des 2020 pada 07.53
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.4.10
 
@@ -78,7 +78,7 @@ CREATE TABLE `cable_order` (
   `no_sj` varchar(20) DEFAULT NULL,
   `cable_type_id` int(10) NOT NULL,
   `length` int(10) NOT NULL,
-  `warehouse_id` int(10) NOT NULL,
+  `warehouse_code` varchar(8) NOT NULL,
   `stok_in` varchar(20) NOT NULL,
   `stok_out` varchar(20) NOT NULL,
   `noted` text NOT NULL,
@@ -93,16 +93,12 @@ CREATE TABLE `cable_order` (
 -- Dumping data untuk tabel `cable_order`
 --
 
-INSERT INTO `cable_order` (`id`, `no_sj`, `cable_type_id`, `length`, `warehouse_id`, `stok_in`, `stok_out`, `noted`, `haspel`, `tgl_order`, `created_at`, `updated_at`, `operator`) VALUES
-(1, NULL, 2, 0, 0, '100', '', 'merah', '100x50', '2020-12-08', '2020-12-08 09:35:27', NULL, ''),
-(2, NULL, 3, 50, 0, '50', '', 'hitam', 'hitam', '2020-12-08', '2020-12-08 09:35:27', NULL, ''),
-(3, NULL, 4, 100, 0, '100', '', 'futaba', '100x50', '2020-12-08', '2020-12-08 09:35:27', NULL, ''),
-(5, NULL, 2, 100, 0, '50', '', 'merah', '100x50', '2020-12-09', '2020-12-08 09:38:19', NULL, ''),
-(6, NULL, 2, 30, 0, '100', '', 'tambah lagi', '100x50', '2020-12-11', '2020-12-11 14:02:54', NULL, ''),
-(7, NULL, 3, 100, 0, '60', '', 'merah', '100x50', '2020-12-11', '2020-12-11 14:02:54', NULL, ''),
-(8, 'SJ001', 4, 100, 0, '50', '', 'tambah lagi', '100x50', '2020-12-11', '2020-12-11 14:30:06', NULL, ''),
-(9, 'SJ001', 2, 50, 0, '40', '', 'tambah lagi', '100x50', '2020-12-11', '2020-12-11 14:30:06', NULL, ''),
-(10, 'SJ001', 3, 100, 0, '10', '', '100', '100x50', '2020-12-11', '2020-12-11 14:32:37', NULL, '');
+INSERT INTO `cable_order` (`id`, `no_sj`, `cable_type_id`, `length`, `warehouse_code`, `stok_in`, `stok_out`, `noted`, `haspel`, `tgl_order`, `created_at`, `updated_at`, `operator`) VALUES
+(1, NULL, 2, 100, 'PAB', '100', '', 'masuk', '100x50', '2020-12-17', '2020-12-17 15:32:23', NULL, ''),
+(2, NULL, 3, 50, 'PAB', '100', '', 'masuk lagi', '100x50', '2020-12-17', '2020-12-17 15:32:23', NULL, ''),
+(3, 'SJ001', 2, 100, '91AQ', '20', '', 'merah', '100x50', '2020-12-17', '2020-12-17 15:33:40', NULL, ''),
+(4, 'SJ001', 2, 100, 'PAB', '', '20', 'merah', '100x50', '2020-12-17', '2020-12-17 15:33:40', NULL, ''),
+(5, 'SJ002', 3, 50, 'PAB', '10', '', 'salah warna', '100x50', '2020-12-17', '2020-12-17 15:35:14', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -134,6 +130,7 @@ INSERT INTO `cable_size` (`id`, `size_name`, `result_size`, `created_at`, `updat
 CREATE TABLE `cable_stok` (
   `id` int(10) NOT NULL,
   `cable_id` int(10) NOT NULL,
+  `length` int(4) NOT NULL,
   `warehouse_kode` varchar(8) NOT NULL,
   `stok` varchar(15) NOT NULL COMMENT 'stok secara keseluruhan - satuan kg',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -144,10 +141,10 @@ CREATE TABLE `cable_stok` (
 -- Dumping data untuk tabel `cable_stok`
 --
 
-INSERT INTO `cable_stok` (`id`, `cable_id`, `warehouse_kode`, `stok`, `created_at`, `updated_at`) VALUES
-(1, 2, 'PAB', '290', '2020-12-08 09:35:27', '2020-12-11 00:00:00'),
-(2, 3, 'PAB', '120', '2020-12-08 09:35:27', '2020-12-11 00:00:00'),
-(3, 4, 'PAB', '150', '2020-12-08 09:35:27', '2020-12-11 00:00:00');
+INSERT INTO `cable_stok` (`id`, `cable_id`, `length`, `warehouse_kode`, `stok`, `created_at`, `updated_at`) VALUES
+(1, 2, 100, 'PAB', '80', '2020-12-17 15:32:23', '2020-12-17 22:33:18'),
+(2, 3, 50, 'PAB', '100', '2020-12-17 15:32:23', '2020-12-17 22:35:13'),
+(3, 2, 100, '91AQ', '20', '2020-12-17 15:33:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -440,10 +437,10 @@ CREATE TABLE `raw_material` (
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `stock_pending`
+-- Struktur dari tabel `retur`
 --
 
-CREATE TABLE `stock_pending` (
+CREATE TABLE `retur` (
   `id` int(10) NOT NULL,
   `no_sj` varchar(20) DEFAULT NULL,
   `cable_type_id` int(10) NOT NULL,
@@ -458,11 +455,32 @@ CREATE TABLE `stock_pending` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data untuk tabel `stock_pending`
+-- Dumping data untuk tabel `retur`
 --
 
-INSERT INTO `stock_pending` (`id`, `no_sj`, `cable_type_id`, `warehouse_kode`, `length`, `qty`, `noted`, `haspel`, `tgl_order`, `created_at`, `operator`) VALUES
-(2, 'SJ001', 4, '91AQ', 100, '10', 'tambah lagi', '100x50', '2020-12-11', '2020-12-11 14:35:02', 'admin-web');
+INSERT INTO `retur` (`id`, `no_sj`, `cable_type_id`, `warehouse_kode`, `length`, `qty`, `noted`, `haspel`, `tgl_order`, `created_at`, `operator`) VALUES
+(2, 'SJ002', 3, 'PAB', 50, '10', 'salah warna', '100x50', '2020-12-17', '2020-12-17 15:35:14', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `stock_pending`
+--
+
+CREATE TABLE `stock_pending` (
+  `id` int(10) NOT NULL,
+  `no_sj` varchar(20) DEFAULT NULL,
+  `cable_type_id` int(10) NOT NULL,
+  `warehouse_kode` varchar(8) NOT NULL,
+  `length` int(10) NOT NULL,
+  `qty` varchar(6) NOT NULL,
+  `noted` text NOT NULL,
+  `haspel` varchar(20) NOT NULL,
+  `tgl_order` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `operator` varchar(30) NOT NULL,
+  `status` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -528,7 +546,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `role_id`, `fullname`, `username`, `password`, `active`, `created_at`, `last_login`) VALUES
-(1, 1, 'Central Kabel', 'admin-web', '$2y$10$1wYO0SdmO9R9T0q62UCOL.hRF6GmAtAH3DFpxLqoxDmS8JYE/.1nq', 1, '2020-10-29 08:19:48', '2020-12-12 15:22:36');
+(1, 1, 'Central Kabel', 'admin-web', '$2y$10$1wYO0SdmO9R9T0q62UCOL.hRF6GmAtAH3DFpxLqoxDmS8JYE/.1nq', 1, '2020-10-29 08:19:48', '2020-12-19 12:40:16');
 
 -- --------------------------------------------------------
 
@@ -719,6 +737,12 @@ ALTER TABLE `raw_material`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `retur`
+--
+ALTER TABLE `retur`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `stock_pending`
 --
 ALTER TABLE `stock_pending`
@@ -780,7 +804,7 @@ ALTER TABLE `cable_import`
 -- AUTO_INCREMENT untuk tabel `cable_order`
 --
 ALTER TABLE `cable_order`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `cable_size`
@@ -792,7 +816,7 @@ ALTER TABLE `cable_size`
 -- AUTO_INCREMENT untuk tabel `cable_stok`
 --
 ALTER TABLE `cable_stok`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `cable_type`
@@ -885,10 +909,16 @@ ALTER TABLE `raw_material`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT untuk tabel `retur`
+--
+ALTER TABLE `retur`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT untuk tabel `stock_pending`
 --
 ALTER TABLE `stock_pending`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT untuk tabel `submenu`
