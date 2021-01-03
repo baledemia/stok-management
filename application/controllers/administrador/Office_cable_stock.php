@@ -167,7 +167,7 @@ class Office_cable_Stock extends CI_Controller {
 
 		$this->db->insert('cable_order', $save);
 		
-		$this->db->insert('retur', $retur);
+		$this->db->insert('cable_retur', $retur);
 
 		$this->db->delete('stock_pending', ['id' => $id]);
 

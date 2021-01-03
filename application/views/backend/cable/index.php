@@ -24,9 +24,9 @@
 						<form action="<?=$url ?>" method="POST">
 							<div class="row">
 								<div class="col-md-4 mb-3">
-									<label for="">Cable Category</label>
+									<label for="">Merk</label>
 									<select name="cable_category" class="form-control">
-										<option value="">-- Choose Category --</option>
+										<option value="">-- Choose Merk --</option>
 										<?php foreach($category as $cat) : ?>
 											<option value="<?=$cat->id_cat ?>" <?php if($this->uri->segment(3) == 'edit' && $cable->cable_category == $cat->id_cat) { ?> selected <?php } ?>><?=$cat->name_category ?></option>
 										<?php endforeach; ?>
