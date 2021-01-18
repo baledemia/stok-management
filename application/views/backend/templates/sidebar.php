@@ -58,7 +58,7 @@
     </a>
     <div id="collapseMasterCable" class="collapse" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="<?=site_url('administrador/category') ?>">Category</a>
+        <a class="collapse-item" href="<?=site_url('administrador/category') ?>">Merk</a>
         <a class="collapse-item" href="<?=site_url('administrador/type') ?>">Type</a>
         <a class="collapse-item" href="<?=site_url('administrador/cable') ?>">Local Cable</a>
       </div>
@@ -73,7 +73,7 @@
     </a>
     <div id="collapseImportCable" class="collapse" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="<?=site_url('administrador/merk') ?>">Merk</a>
+        <a class="collapse-item" href="<?=site_url('administrador/import-merk') ?>">Import Merk</a>
         <a class="collapse-item" href="<?=site_url('administrador/cable-import') ?>">Import Cable</a>
       </div>
     </div>

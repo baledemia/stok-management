@@ -16,9 +16,9 @@
 
 						<?php
 						if($this->uri->segment(3) == 'edit') :
-			        $url = site_url('administrador/merk/edit/'.$merk->id);
+			        $url = site_url('administrador/import-merk/edit/'.$merk->id);
 			      else:
-			        $url = site_url('administrador/merk');
+			        $url = site_url('administrador/import-merk');
 			      endif ?>
 
 						<form action="<?=$url ?>" method="POST">
@@ -82,7 +82,7 @@ var manageprogrammesTable;
 
 $(document).ready(function() {
 	manageprogrammesTable = $("#dataTable-programmes").DataTable({
-		"ajax": '<?php echo site_url('administrador/merk/getmerk')  ?>',
+		"ajax": '<?php echo site_url('administrador/import-merk/getmerk')  ?>',
 		'orders': []
 	});	
 });

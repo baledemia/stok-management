@@ -16,6 +16,7 @@ class Type extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
+		$this->form_validation->set_rules('code_type', 'Kode Tipe', 'required');
 		$this->form_validation->set_rules('type_name', 'Type Name', 'required');
 		$this->form_validation->set_rules('status', 'Status', 'required');
 
@@ -28,6 +29,7 @@ class Type extends CI_Controller {
 		else:
 
 			$data = [
+				'code_type' => $this->input->post('code_type', true),
 				'type_name' => $this->input->post('type_name', true),
 				'status' 	=> $this->input->post('status', true)
 			];
@@ -61,6 +63,7 @@ class Type extends CI_Controller {
 
 			$result['data'][$key] = array(
 				$no,
+				$value['code_type'],
 				$value['type_name'],
 				$status,
 				$buttons
@@ -87,6 +90,7 @@ class Type extends CI_Controller {
 			['username' => $this->session->userdata('username')])->row_array();
 		
 		$this->form_validation->set_rules('type_name', 'Type Name', 'required');
+		$this->form_validation->set_rules('code_type', 'Kode Tipe', 'required');
 		$this->form_validation->set_rules('status', 'Status', 'required');
 
 		if($this->form_validation->run() === false) :
@@ -97,6 +101,7 @@ class Type extends CI_Controller {
 			$this->load->view('backend/templates/footer');
 		else:
 			$data = [
+				'code_type' => $this->input->post('code_type', true),
 				'type_name' => $this->input->post('type_name', true),
 				'status' 	=> $this->input->post('status', true)
 			];

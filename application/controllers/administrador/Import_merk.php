@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Merk extends CI_Controller {
+class Import_merk extends CI_Controller {
 	
 	public function __construct()
 	{
@@ -33,9 +33,9 @@ class Merk extends CI_Controller {
 				'phone' 			=> $this->input->post('phone', true),
 			];
 
-			$this->db->insert('merk', $data);
+			$this->db->insert('import_merk', $data);
 			$this->session->set_flashdata("message", '<div class="alert alert-success">New merk Has Been saved.</div>');
-			redirect('administrador/merk#result');
+			redirect('administrador/import-merk#result');
 				
 		endif;
 	}
@@ -44,14 +44,14 @@ class Merk extends CI_Controller {
 	{
 		$result = array('data' => array());
 
-		$data = $this->db->get('merk')->result_array();
+		$data = $this->db->get('import_merk')->result_array();
 		$no = 1;
 		foreach ($data as $key => $value) :
 			$confirm = "return confirm('Are you sure delete this data?')";
 
 			$buttons = '
-					<a href="'.site_url('administrador/merk/delete/'.$value['id']).'" class="badge badge-danger" onclick="'.$confirm.'">Delete</a>
-					<a href="'.site_url('administrador/merk/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
+					<a href="'.site_url('administrador/import-merk/delete/'.$value['id']).'" class="badge badge-danger" onclick="'.$confirm.'">Delete</a>
+					<a href="'.site_url('administrador/import-merk/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
 				';
 
 			$result['data'][$key] = array(
@@ -71,10 +71,10 @@ class Merk extends CI_Controller {
 
 	public function edit($id = 0)
 	{
-		if($id == 0 && empty($id)) redirect("administrador/merk");
+		if($id == 0 && empty($id)) redirect("administrador/import-merk");
 
-		$merk = $this->menu->first("merk", 'id', $id); 
-		if(empty($merk)) redirect("administrador/merk"); 
+		$merk = $this->menu->first("import_merk", 'id', $id); 
+		if(empty($merk)) redirect("administrador/import-merk"); 
 
 		$merk = $merk->row();
 		$data = array('merk' => $merk);
@@ -101,9 +101,9 @@ class Merk extends CI_Controller {
 				'updated_at'		=> date("Y-m-d H:i:s")
 			];
 		
-			$this->db->update('merk', $data, array('id' => $id)); #metode untuk update data.
+			$this->db->update('import_merk', $data, array('id' => $id)); #metode untuk update data.
 			$this->session->set_flashdata("message", '<div class="alert alert-success">ID merk <strong>'.$id.'</strong> updated</div>');
-			redirect('administrador/merk#result');
+			redirect('administrador/import-merk#result');
 		endif;
 	}
 
@@ -111,11 +111,11 @@ class Merk extends CI_Controller {
 	{
 		if($id == 0 && empty($id)) redirect("administrador/merk"); 
 
-		$result = $this->menu->first("merk", 'id', $id);
-		if(empty($result)) redirect("administrador/merk"); 
+		$result = $this->menu->first("import_merk", 'id', $id);
+		if(empty($result)) redirect("administrador/import-merk"); 
 
 		$this->session->set_flashdata("message", '<div class="alert alert-danger">ID merk <strong>'.$id.'</strong> deleted</div>');
-		$this->menu->delete('id', $id, 'merk'); 
-		redirect('administrador/merk#result');
+		$this->menu->delete('id', $id, 'import_merk'); 
+		redirect('administrador/import-merk#result');
 	}
 }

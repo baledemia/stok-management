@@ -16,6 +16,7 @@ class Color extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
+		$this->form_validation->set_rules('id_color', 'ID Color', 'required|is_unique[color.kode_color]');
 		$this->form_validation->set_rules('kode_color', 'Color Code', 'required|is_unique[color.kode_color]');
 		$this->form_validation->set_rules('color_name', 'Color Name', 'required');
 
@@ -28,6 +29,7 @@ class Color extends CI_Controller {
 		else:
 
 			$data = [
+				'id_color' 	=> $this->input->post('id_color', true),
 				'kode_color' 	=> $this->input->post('kode_color', true),
 				'color_name' 	=> $this->input->post('color_name', true)
 			];
@@ -55,6 +57,7 @@ class Color extends CI_Controller {
 
 			$result['data'][$key] = array(
 				$no,
+				$value['id_color'],
 				$value['kode_color'],
 				$value['color_name'],
 				$buttons
@@ -88,6 +91,7 @@ class Color extends CI_Controller {
 		   $is_unique =  '';
 		}
 
+		$this->form_validation->set_rules('id_color', 'ID Color', 'required');
 		$this->form_validation->set_rules('kode_color', 'Color Code', 'required'.$is_unique);
 		$this->form_validation->set_rules('color_name', 'Color Name', 'required');
 
@@ -99,6 +103,7 @@ class Color extends CI_Controller {
 			$this->load->view('backend/templates/footer');
 		else:
 			$data = [
+				'id_color' 	=> $this->input->post('id_color', true),
 				'kode_color' 	=> $this->input->post('kode_color', true),
 				'color_name' 	=> $this->input->post('color_name', true)
 			];

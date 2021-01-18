@@ -23,6 +23,12 @@
 
 						<form action="<?=$url ?>" method="POST">
 							<div class="form-group">
+					    		<label for="id_color">ID Color</label>
+					    		<input color="text" class="form-control" name="id_color" id="id_color" placeholder="ID Color" value="<?=($this->uri->segment(3) == 'edit') ? $color->id_color : set_value('id_color') ?>">
+					      		<?=form_error('id_color', '<small class="text-danger">', '</small>') ?>
+					    	</div>
+
+							<div class="form-group">
 					    		<label for="kode_color">Color Code</label>
 					    		<input color="text" class="form-control" name="kode_color" id="kode_color" placeholder="Color Code" value="<?=($this->uri->segment(3) == 'edit') ? $color->kode_color : set_value('kode_color') ?>">
 					      		<?=form_error('kode_color', '<small class="text-danger">', '</small>') ?>
@@ -51,6 +57,7 @@
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
+							      <th scope="col">ID color</th>
 							      <th scope="col">Color Code</th>
 							      <th scope="col">Color Name</th>
 							      <th scope="col">Action</th>

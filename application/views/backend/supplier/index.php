@@ -41,15 +41,6 @@
 					    	</div>
 
 					    	<div class="form-group">
-					    		<label for="avatar"><strong>Avatar</strong></label>
-					    		<input type="file" class="form-control" name="avatar" id="avatar">
-					    		<?php if($this->uri->segment(3) == 'edit') { ?>
-					    		<img src="<?=base_url('assets/supplier/'.$supplier->avatar) ?>" alt="" width="90">
-					    		<?php } ?>
-					      		<?=form_error('avatar', '<small class="text-danger">', '</small>') ?>	
-					    	</div>
-
-					    	<div class="form-group">
 					    		<label for="address"><strong>Address</strong></label>
 					    		<textarea class="form-control" name="address" id="address" placeholder="Address"><?=($this->uri->segment(3) == 'edit') ? $supplier->address : set_value('address') ?></textarea>
 					      		<?=form_error('address', '<small class="text-danger">', '</small>') ?>
@@ -82,7 +73,6 @@
 							      <th scope="col">Code</th>
 							      <th scope="col">Name</th>
 							      <th scope="col">Phone</th>
-							      <th scope="col">Avatar</th>
 							      <th scope="col">Address</th>
 							      <th scope="col">Status</th>
 							      <th scope="col">Updated At</th>

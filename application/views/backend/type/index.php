@@ -22,6 +22,12 @@
 			      endif ?>
 
 						<form action="<?=$url ?>" method="POST">
+							<div class="form-group">
+					    		<label for="code_type">Kode Type</label>
+					    		<input type="text" class="form-control" name="code_type" id="code_type" placeholder="Kode" value="<?=($this->uri->segment(3) == 'edit') ? $type->code_type : set_value('code_type') ?>">
+					      		<?=form_error('code_type', '<small class="text-danger">', '</small>') ?>
+					    	</div>
+
 					    	<div class="form-group">
 					    		<label for="type_name">Type Name</label>
 					    		<input type="text" class="form-control" name="type_name" id="type_name" placeholder="Type Name" value="<?=($this->uri->segment(3) == 'edit') ? $type->type_name : set_value('type_name') ?>">
@@ -52,6 +58,7 @@
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
+							      <th scope="col">Kode Type</th>
 							      <th scope="col">Type</th>
 							      <th scope="col">Status</th>
 							      <th scope="col">Action</th>
