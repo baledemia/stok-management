@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Office_cable_Stock extends CI_Controller {
+class Surat_jalan extends CI_Controller {
 	
 	public function __construct()
 	{
@@ -12,27 +12,88 @@ class Office_cable_Stock extends CI_Controller {
 
 	public function index()
 	{
-		$data['title'] = 'Cable <strong>Stock</strong>';
+		$data['title'] = 'Surat <strong>Jalan</strong>';
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
 		$this->load->view('backend/templates/header', $data);
 		$this->load->view('backend/templates/sidebar', $data);
 		$this->load->view('backend/templates/topbar', $data);
-		$this->load->view('backend/office_stock_cable/index', $data);
+		$this->load->view('backend/surat-jalan/index', $data);
 		$this->load->view('backend/templates/footer');
 	}
 
-	public function add_office_stock()
+	public function add()
 	{
-		$data['title'] 		= 'Stock <strong>In</strong>';
+		$data['title'] 		= 'Surat <strong>Jalan</strong>';
 		$data['user'] 		= $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+		$data['type'] 		= $this->db->get('cable_type_size')->result();
+		$data['customer'] 	= $this->db->get('customer')->result();
 
 		$this->load->view('backend/templates/header', $data);
 		$this->load->view('backend/templates/sidebar', $data);
 		$this->load->view('backend/templates/topbar', $data);
-		$this->load->view('backend/office_stock_cable/add', $data);
+		$this->load->view('backend/surat-jalan/add', $data);
 		$this->load->view('backend/templates/footer');
+	}
+
+	public function proses_add(){
+		date_default_timezone_set('Asia/Jakarta');
+
+		$sum 			= 0;
+		$index 			= 0;
+		$data_detail 	= array();
+
+		$cable_type		= $this->input->post('cable_type');
+
+		foreach ($cable_type as $r) {
+			$price	= $this->db->get_where('cable_type_size', ['id' => $r])->row('price');
+			$subs	= $this->input->post('qty')[$index] * $price;
+
+			$sum += $subs;
+		}
+
+		$address = $this->db->get_where('customer', ['id' => $this->input->post('customer')])->row('alamat');
+		if($this->input->post('ship_to') == ''){
+			$ship_to = $address;
+		}else{
+			$ship_to = $this->input->post('ship_to');
+		}
+
+		$data_order = array(
+			'po_number' 	=> $this->input->post('no_sj'),
+			'customer'		=> $this->input->post('customer'),
+			'bill_to'		=> $address,
+			'ship_to'		=> $ship_to,
+			'delivery_date' => $this->input->post('date'),
+			'total'			=> $sum,
+			'notes'			=> $this->input->post('date'),
+			'status'		=> '1'
+		);
+
+		$this->basic->save($data_order, 'delivery_order_cable');
+		$no_sj = $this->db->insert_id();
+
+		foreach($cable_type as $res){
+			
+			$get_price	= $this->db->get_where('cable_type_size', ['id' => $res])->row('price');
+			$subtotal	= $this->input->post('qty')[$index] * $get_price;
+
+			array_push($data_detail, array(
+		    	'delivery_code_detail'	=> $no_sj,
+				'cable_code'			=> $res,
+		    	'qty'					=> $this->input->post('qty')[$index],    
+		    	'satuan'				=> $this->input->post('satuan')[$index],    
+				'price'					=> $get_price,
+				'sub_total'				=> $subtotal
+	     	));
+		    
+        	$index++; 
+		}
+
+       	$this->basic->save_batch($data_detail, 'delivery_order_cable_detail');
+       	$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! /div>');
+        redirect('administrador/surat-jalan');
 	}
 
 	public function getCable()

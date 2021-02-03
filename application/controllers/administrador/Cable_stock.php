@@ -113,12 +113,13 @@ class Cable_Stock extends CI_Controller {
 		$data['title'] 		= 'Out <strong>Factory Stock</strong>';
 		$data['user'] 		= $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
-		$this->db->select('cable_type_size.*, cable_type.type_name, cable_size.result_size, cable_category.name_category, color.color_name');
-		$this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
-		$this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
-		$this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
-		$this->db->join('color', 'color.id = cable_type_size.color_id');
+		// $this->db->select('cable_type_size.*, cable_type.type_name, cable_size.result_size, cable_category.name_category, color.color_name');
+		// $this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
+		// $this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
+		// $this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
+		// $this->db->join('color', 'color.id = cable_type_size.kode_color');
 		$data['type'] 		= $this->db->get('cable_type_size')->result();
+		// echo $this->db->last_query();die;
 
 		$data['warehouse'] 	= $this->db->get_where('warehouse', ['kode_warehouse !=' => 'PAB'])->result();
 

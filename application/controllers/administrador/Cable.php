@@ -16,18 +16,26 @@ class Cable extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
+		$this->db->order_by('code_merk', 'ASC');
 		$data['category']	= $this->db->get('cable_category')->result();
+
+		$this->db->order_by('code_type', 'ASC');
 		$data['type']		= $this->db->get('cable_type')->result();
+
 		$data['size']		= $this->db->get('cable_size')->result();
 		$data['supplier']	= $this->db->get('supplier')->result();
+
+		$this->db->order_by('id_color', 'ASC');
 		$data['color']		= $this->db->get('color')->result();
 
+		$this->form_validation->set_rules('cable_category', 'Category', 'required');
 		$this->form_validation->set_rules('type_cable_id', 'Cable Type', 'required');
+		$this->form_validation->set_rules('color_id', 'Color', 'required');
 		$this->form_validation->set_rules('size_cable_id', 'Cable Size', 'required');
 		$this->form_validation->set_rules('kode_supplier', 'Supplier', 'required');
-		$this->form_validation->set_rules('cable_length', 'Cable Length', 'required');
-		$this->form_validation->set_rules('color_id', 'Color', 'required');
-		$this->form_validation->set_rules('cable_category', 'Category', 'required');
+		$this->form_validation->set_rules('cable_code', 'No. Barang', 'required|is_unique[cable_type_size.cable_code]');
+		$this->form_validation->set_rules('cable_name', 'Nama Barang', 'required');
+		$this->form_validation->set_rules('price', 'Harga', 'required');
 
 		if($this->form_validation->run() === false) :
 			$this->load->view('backend/templates/header', $data);
@@ -38,12 +46,14 @@ class Cable extends CI_Controller {
 		else:
 
 			$data = [
+				'cable_code' 		=> $this->input->post('cable_code', true),
+				'cable_name' 		=> $this->input->post('cable_name', true),
 				'cable_category' 	=> $this->input->post('cable_category', true),
 				'type_cable_id' 	=> $this->input->post('type_cable_id', true),
 				'size_cable_id' 	=> $this->input->post('size_cable_id', true),
-				'color_id' 			=> $this->input->post('color_id', true),
+				'kode_color'		=> $this->input->post('color_id', true),
 				'kode_supplier' 	=> $this->input->post('kode_supplier', true),
-				'cable_length' 		=> $this->input->post('cable_length', true),
+				'price' 			=> $this->input->post('price', true),
 			];
 
 			$this->db->insert('cable_type_size', $data);
@@ -58,11 +68,11 @@ class Cable extends CI_Controller {
 		$result = array('data' => array());
 
 		$this->db->select("cable_type_size.*, cable_size.size_name, cable_type.type_name, supplier.name, color.color_name, cable_category.name_category");
-		$this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
+		$this->db->join('cable_type', 'cable_type.code_type = cable_type_size.type_cable_id');
 		$this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
 		$this->db->join('supplier', 'supplier.id = cable_type_size.kode_supplier');
-		$this->db->join('color', 'color.id = cable_type_size.color_id');
-		$this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
+		$this->db->join('color', 'color.id_color = cable_type_size.kode_color');
+		$this->db->join('cable_category', 'cable_category.code_merk = cable_type_size.cable_category');
 		$data = $this->db->get('cable_type_size')->result_array();
 		// echo $this->db->last_query();die;
 		$no = 1;
@@ -76,12 +86,14 @@ class Cable extends CI_Controller {
 
 			$result['data'][$key] = array(
 				$no,
+				$value['cable_code'],
+				$value['cable_name'],
 				$value['name_category'],
 				$value['type_name'],
 				$value['size_name'],
 				$value['color_name'],
 				$value['name'],
-				$value['cable_length'],
+				"Rp ".number_format($value['price']),
 				tgl_indo($value['created_at']),
 				$buttons
 			);
@@ -112,12 +124,21 @@ class Cable extends CI_Controller {
 		$data['color']		= $this->db->get('color')->result();
 		$data['category']	= $this->db->get('cable_category')->result();
 
+		$original_value = $this->db->query("SELECT cable_code FROM cable_type_size WHERE id = ".$id)->row()->cable_code ;
+	    if($this->input->post('cable_code') != $original_value) {
+	       $is_unique =  '|is_unique[cable_type_size.cable_code]';
+	    } else {
+	       $is_unique =  '';
+	    }
+
+		$this->form_validation->set_rules('cable_category', 'Category', 'required');
 		$this->form_validation->set_rules('type_cable_id', 'Cable Type', 'required');
+		$this->form_validation->set_rules('color_id', 'Color', 'required');
 		$this->form_validation->set_rules('size_cable_id', 'Cable Size', 'required');
 		$this->form_validation->set_rules('kode_supplier', 'Supplier', 'required');
-		$this->form_validation->set_rules('cable_length', 'Cable Length', 'required');
-		$this->form_validation->set_rules('color_id', 'Color', 'required');
-		$this->form_validation->set_rules('cable_category', 'Category', 'required');
+		$this->form_validation->set_rules('cable_code', 'No. Barang', 'required'.$is_unique);
+		$this->form_validation->set_rules('cable_name', 'Nama Barang', 'required');
+		$this->form_validation->set_rules('price', 'Harga', 'required');
 
 
 		if($this->form_validation->run() === false) :
@@ -128,12 +149,13 @@ class Cable extends CI_Controller {
 			$this->load->view('backend/templates/footer');
 		else:
 			$data = [
+				'cable_code' 		=> $this->input->post('cable_code', true),
+				'cable_name' 		=> $this->input->post('cable_name', true),
 				'cable_category' 	=> $this->input->post('cable_category', true),
 				'type_cable_id' 	=> $this->input->post('type_cable_id', true),
 				'size_cable_id' 	=> $this->input->post('size_cable_id', true),
-				'color_id'		 	=> $this->input->post('color_id', true),
+				'kode_color'	 	=> $this->input->post('color_id', true),
 				'kode_supplier' 	=> $this->input->post('kode_supplier', true),
-				'cable_length' 		=> $this->input->post('cable_length', true),
 				'updated_at' 		=> date("Y-m-d H:i:s")
 			];
 		
@@ -148,11 +170,11 @@ class Cable extends CI_Controller {
 	{
 		if($id == 0 && empty($id)) redirect("administrador/color"); 
 
-		$result = $this->menu->first("color", 'id', $id);
-		if(empty($result)) redirect("administrador/color"); 
+		$result = $this->menu->first("cable_type_size", 'id', $id);
+		if(empty($result)) redirect("administrador/cable"); 
 
 		$this->session->set_flashdata("message", '<div class="alert alert-danger">ID Color <strong>'.$id.'</strong> deleted</div>');
-		$this->menu->delete('id', $id, 'color'); 
-		redirect('administrador/color#result');
+		$this->menu->delete('id', $id, 'cable_type_size'); 
+		redirect('administrador/cable#result');
 	}
 }
