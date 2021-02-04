@@ -175,7 +175,7 @@ class Material_stok extends CI_Controller {
 				['username' => $this->session->userdata('username')])->row_array();
 
 			$data['material'] = $this->db->get_where('material_kawat_stok', ['slug' => $slug])->row_array(); 
-			$data['material_type'] = $this->db->get('kawat_type')->result_array(); 
+			$data['material_type'] = $this->db->get('material_type')->result_array(); 
 			$data['supplier'] = $this->db->get('supplier')->result_array(); 
 
 			$this->load->view('backend/templates/header', $data);
