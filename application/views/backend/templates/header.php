@@ -14,9 +14,9 @@
   <script src="<?=base_url('assets/backend/') ?>vendor/jquery/jquery.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
   <style>
-    body {font-family: 'Noto Sans JP', sans-serif !important; font-size: 16px !important}
+    body {font-family: 'Noto Serif', serif !important; font-size: 16px !important}
     .has-error {border-color: #dc3545}
     .has-success {border-color: #28a745}
     .btn-node-border {border-radius: 0 !important}

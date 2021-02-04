@@ -110,7 +110,7 @@ class Bahan_baku extends CI_Controller {
 	{
 		$result = array('data' => array());
 
-		$data = $this->db->get('oven_drum')->result_array();
+		$data = $this->db->get_where('material_oven_drum', ['status' => 0])->result_array();
 		$no = 1;
 		foreach ($data as $key => $value) :
 			$modal = "lihatBobin('".$value['id']."')";
@@ -131,6 +131,32 @@ class Bahan_baku extends CI_Controller {
 				$value['no_bobin'],
 				$value['no_mesin'],
 				$value['berat_bobin'],
+				$buttons
+			);
+
+			$no++;
+		endforeach;
+
+		echo json_encode($result);
+	}
+
+	public function ajax_drawing()
+	{
+		$result = array('data' => array());
+
+		$data = $this->db->get_where('material_oven_drum', ['status' => 0])->result_array();
+		$no = 1;
+		foreach ($data as $key => $value) :
+			#button action
+			$buttons = '
+					<a href="#" class="btn btn-outline-primary btn-sm">Submit Oven</a> 
+				';
+
+			$result['data'][$key] = array(
+				$value['no_bobin'],
+				$value['bruto'],
+				$value['berat_bobin'],
+				$value['netto'],
 				$buttons
 			);
 
