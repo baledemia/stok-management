@@ -57,7 +57,7 @@
 											<select required="required" name="cable_type[]" class="form-control selectpicker" data-live-search="true" data-live-search-style="begins">
 												<option value="">-- Choose Type --</option>
 												<?php foreach($type as $ct) : ?>
-													<option value="<?=$ct->id ?>"><?=$ct->type_name ?> <?=$ct->result_size ?> <?=$ct->name_category ?> <?=$ct->color_name ?></option>
+													<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>

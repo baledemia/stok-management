@@ -15,12 +15,14 @@
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
-							      <th scope="col">Code</th>
-							      <th scope="col">Name</th>
-							      <th scope="col">Phone</th>
-							      <th scope="col">Address</th>
-							      <th scope="col">Status</th>
-							      <th scope="col">Updated At</th>
+							      <th scope="col">Nomor PO</th>
+							      <th scope="col">Nama Perusahaan</th>
+							      <th scope="col">Nama Customer</th>
+							      <th scope="col">Alamat Tagihan</th>
+							      <th scope="col">Alamat Pengiriman</th>
+							      <th scope="col">Tanggal Kirim</th>
+							      <th scope="col">Total</th>
+							      <th scope="col">Catatan</th>
 							      <th scope="col">Action</th>
 							    </tr>
 							  </thead>
@@ -42,11 +44,8 @@ var manageprogrammesTable;
 
 $(document).ready(function() {
 	manageprogrammesTable = $("#dataTable-programmes").DataTable({
-		"ajax": '<?php echo site_url('administrador/supplier/getSupplier')  ?>',
+		"ajax": '<?php echo site_url('administrador/surat-jalan/getPo')  ?>',
 		'orders': []
 	});	
 });
 </script>
-
-
-      

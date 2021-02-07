@@ -28,11 +28,7 @@ class Cable_Stock extends CI_Controller {
 		$data['title'] 		= 'Add <strong>Factory Stock</strong>';
 		$data['user'] 		= $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 
-		$this->db->select('cable_type_size.*, cable_type.type_name, cable_size.result_size, cable_category.name_category, color.color_name');
-		$this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
-		$this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
-		$this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
-		$this->db->join('color', 'color.id = cable_type_size.color_id');
+		
 		$data['type'] 		= $this->db->get('cable_type_size')->result();
 
 		$data['warehouse'] 	= $this->db->get_where('warehouse', ['kode_warehouse !=' => 'PAB'])->result();
@@ -96,7 +92,7 @@ class Cable_Stock extends CI_Controller {
         	$this->basic->save_batch($data_detail, 'cable_order');
 
 
-            $this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! /div>');
+            $this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! </div>');
             redirect('administrador/cable-stock');
 
 		}
@@ -174,5 +170,88 @@ class Cable_Stock extends CI_Controller {
 		$this->load->view('backend/templates/topbar', $data);
 		$this->load->view('backend/stok_kabel/out', $data);
 		$this->load->view('backend/templates/footer');
+	}
+
+	public function getStock()
+	{
+		$result = array('data' => array());
+
+		$this->db->select('cable_stok.*, cable_type_size.cable_name');
+		$this->db->join('cable_type_size', 'cable_type_size.id = cable_stok.cable_id');
+		$this->db->where('cable_stok.warehouse_kode', 'PAB');
+		$data = $this->db->get('cable_stok')->result_array();
+		// echo $this->db->last_query();die;
+		$no = 1;
+		foreach ($data as $key => $value) :
+
+			$confirm2 = "return confirm('Are you sure return this data?')";
+
+			$buttons = '
+					<a href="'.site_url('administrador/cable-stock/show/'.$value['warehouse_kode'].'/'.$value['cable_id'].'/'.$value['length']).'" class="badge badge-success">Lihat Detail</a>
+				';
+
+			$result['data'][$key] = array(
+				$no,
+				$value['cable_name'],
+				$value['length'],
+				$value['warehouse_kode'],
+				$value['stok'],
+				$buttons
+			);
+
+			$no++;
+		endforeach;
+
+		echo json_encode($result);
+	}
+
+	public function show()
+	{
+		$data['title'] = 'Detail <strong>Stock</strong>';
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
+
+		$this->load->view('backend/templates/header', $data);
+		$this->load->view('backend/templates/sidebar', $data);
+		$this->load->view('backend/templates/topbar', $data);
+		$this->load->view('backend/stok_kabel/detail', $data);
+		$this->load->view('backend/templates/footer');
+	}
+
+	public function getDetail()
+	{
+		$result = array('data' => array());
+
+		$gudang = $this->uri->segment(4);
+		$kabel 	= $this->uri->segment(5);
+		$length = $this->uri->segment(6);
+
+		$this->db->select('cable_order.*, cable_type_size.cable_name');
+		$this->db->join('cable_type_size', 'cable_type_size.id = cable_order.cable_type_id');
+		$this->db->where('cable_order.warehouse_code', $gudang);
+		$this->db->where('cable_order.cable_type_id', $kabel);
+		$this->db->where('cable_order.length', $length);
+		$data = $this->db->get('cable_order')->result_array();
+		// echo $this->db->last_query();die;
+		$no = 1;
+		foreach ($data as $key => $value) :
+
+			$confirm2 = "return confirm('Are you sure return this data?')";
+
+			$result['data'][$key] = array(
+				$no,
+				$value['cable_name'],
+				$value['length'],
+				$value['stok_in'],
+				$value['stok_out'],
+				$value['noted'],
+				$value['haspel'],
+				tgl_indo($value['tgl_order'])
+			);
+
+			$no++;
+		endforeach;
+
+		echo json_encode($result);
 	}
 }

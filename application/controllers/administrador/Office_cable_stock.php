@@ -39,12 +39,8 @@ class Office_cable_Stock extends CI_Controller {
 	{
 		$result = array('data' => array());
 
-		$this->db->select("stock_pending.*, cable_size.size_name, color.color_name, cable_category.name_category, cable_type.type_name");
+		$this->db->select("stock_pending.*, cable_type_size.cable_name");
 		$this->db->join('cable_type_size', 'cable_type_size.id = stock_pending.cable_type_id');
-		$this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
-		$this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
-		$this->db->join('color', 'color.id = cable_type_size.kode_color');
-		$this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
 		$data = $this->db->get('stock_pending')->result_array();
 		// echo $this->db->last_query();die;
 		$no = 1;
@@ -60,13 +56,47 @@ class Office_cable_Stock extends CI_Controller {
 			$result['data'][$key] = array(
 				$no,
 				$value['no_sj'],
-				$value['name_category']." ".$value['type_name']." ".$value['size_name']." ".$value['color_name'],
+				$value['cable_name'],
 				$value['warehouse_kode'],
+				$value['length'],
 				$value['qty'],
 				$value['haspel'],
 				$value['noted'],
 				tgl_indo($value['tgl_order']),
 				$value['operator'],
+				$buttons
+			);
+
+			$no++;
+		endforeach;
+
+		echo json_encode($result);
+	}
+
+	public function getStock()
+	{
+		$result = array('data' => array());
+
+		$this->db->select('cable_stok.*, cable_type_size.cable_name');
+		$this->db->join('cable_type_size', 'cable_type_size.id = cable_stok.cable_id');
+		$this->db->where('cable_stok.warehouse_kode !=', 'PAB');
+		$data = $this->db->get('cable_stok')->result_array();
+		// echo $this->db->last_query();die;
+		$no = 1;
+		foreach ($data as $key => $value) :
+
+			$confirm2 = "return confirm('Are you sure return this data?')";
+
+			$buttons = '
+					<a href="'.site_url('administrador/office-cable-stock/show/'.$value['id']).'" class="badge badge-success">Lihat Detail</a>
+				';
+
+			$result['data'][$key] = array(
+				$no,
+				$value['cable_name'],
+				$value['length'],
+				$value['warehouse_kode'],
+				$value['stok'],
 				$buttons
 			);
 
@@ -124,7 +154,7 @@ class Office_cable_Stock extends CI_Controller {
 
 		$this->db->delete('stock_pending', ['id' => $id]);
 
-		$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! /div>');
+		$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! </div>');
         redirect('administrador/office-cable-stock');
 	}
 
@@ -170,7 +200,7 @@ class Office_cable_Stock extends CI_Controller {
 
 		$this->db->delete('stock_pending', ['id' => $id]);
 
-		$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Return ! /div>');
+		$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Return ! </div>');
         redirect('administrador/office-cable-stock');
 	}
 

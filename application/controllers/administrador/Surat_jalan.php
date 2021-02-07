@@ -67,7 +67,7 @@ class Surat_jalan extends CI_Controller {
 			'ship_to'		=> $ship_to,
 			'delivery_date' => $this->input->post('date'),
 			'total'			=> $sum,
-			'notes'			=> $this->input->post('date'),
+			'notes'			=> $this->input->post('catatan'),
 			'status'		=> '1'
 		);
 
@@ -96,38 +96,30 @@ class Surat_jalan extends CI_Controller {
         redirect('administrador/surat-jalan');
 	}
 
-	public function getCable()
+	public function getPo()
 	{
 		$result = array('data' => array());
 
-		$this->db->select("stock_pending.*, cable_size.size_name, color.color_name, cable_category.name_category, cable_type.type_name");
-		$this->db->join('cable_type_size', 'cable_type_size.id = stock_pending.cable_type_id');
-		$this->db->join('cable_size', 'cable_size.id = cable_type_size.size_cable_id');
-		$this->db->join('cable_type', 'cable_type.id = cable_type_size.type_cable_id');
-		$this->db->join('color', 'color.id = cable_type_size.kode_color');
-		$this->db->join('cable_category', 'cable_category.id_cat = cable_type_size.cable_category');
-		$data = $this->db->get('stock_pending')->result_array();
+		$this->db->join('customer', 'customer.id = delivery_order_cable.customer');
+		$data = $this->db->get('delivery_order_cable')->result_array();
 		// echo $this->db->last_query();die;
 		$no = 1;
 		foreach ($data as $key => $value) :
-			$confirm1 = "return confirm('Are you sure confirm this data?')";
-			$confirm2 = "return confirm('Are you sure return this data?')";
 
 			$buttons = '
-					<a href="'.site_url('administrador/office-cable-stock/confirm/'.$value['id']).'" class="badge badge-success" onclick="'.$confirm1.'">Confirm</a>
-					<a href="#" class="badge badge-danger" data-toggle="modal" data-target="#exampleModal" id="retur" data-id="'.$value['id'].'">Retur</a>
+					<a href="'.site_url('administrador/office-cable-stock/show/'.$value['id_delivery_order']).'" class="badge badge-success">Lihat Detail</a>
 				';
 
 			$result['data'][$key] = array(
 				$no,
-				$value['no_sj'],
-				$value['name_category']." ".$value['type_name']." ".$value['size_name']." ".$value['color_name'],
-				$value['warehouse_kode'],
-				$value['qty'],
-				$value['haspel'],
-				$value['noted'],
-				tgl_indo($value['tgl_order']),
-				$value['operator'],
+				$value['po_number'],
+				$value['nama_perusahaan'],
+				$value['nama_customer'],
+				$value['bill_to'],
+				$value['ship_to'],
+				tgl_indo($value['delivery_date']),
+				"Rp ".number_format($value['total']),
+				$value['notes'],
 				$buttons
 			);
 
