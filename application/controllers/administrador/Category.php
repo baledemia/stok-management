@@ -30,7 +30,7 @@ class Category extends CI_Controller {
 				'type_material' => $this->input->post('type_material', true)
 			];
 
-			$this->db->insert('raw_material', $data);
+			$this->db->insert('material_category', $data);
 			$_id = $this->db->insert_id();
 
 			$this->session->set_flashdata("message", '<div class="alert alert-success">Kategori bahan baku berhasil ditambahkan</div>');
@@ -42,7 +42,7 @@ class Category extends CI_Controller {
 	{
 		$result = array('data' => array());
 
-		$data = $this->db->get('raw_material')->result_array();
+		$data = $this->db->get('material_category')->result_array();
 		$no = 1;
 		foreach ($data as $key => $value) :
 			$confirm = "return confirm('Are you sure delete this data?')";
@@ -79,7 +79,7 @@ class Category extends CI_Controller {
 	{
 		if($id == 0 && empty($id)) redirect("administrador/category");
 
-		$category = $this->basic->first("raw_material", 'id', $id); 
+		$category = $this->basic->first("material_category", 'id', $id); 
 		if(empty($category)) redirect("administrador/category"); 
 
 		$category = $category->row();
@@ -104,7 +104,7 @@ class Category extends CI_Controller {
 				'updated_at' => date('Y-m-d H:i:s')
 			];
 
-			$this->basic->update('id', $id, $data, 'raw_material'); #metode untuk update data.
+			$this->basic->update('id', $id, $data, 'material_category'); #metode untuk update data.
 			$this->session->set_flashdata("message", '<div class="alert alert-success">
 				ID Kategori <strong>'.$id.'</strong> sudah diupdate.</div>');
 			redirect('administrador/category');
@@ -116,11 +116,11 @@ class Category extends CI_Controller {
 	{
 		if($id == 0 && empty($id)) redirect("administrador/category"); 
 
-		$result = $this->basic->first("raw_material", 'id', $id);
+		$result = $this->basic->first("material_category", 'id', $id);
 		if(empty($result)) redirect("administrador/category"); 
 
 		$this->session->set_flashdata("message", '<div class="alert alert-danger">ID Kategori <strong>'.$id.'</strong> sudah didelete</div>');
-		$this->menu->delete('id', $id, 'raw_material'); 
+		$this->menu->delete('id', $id, 'material_category'); 
 		redirect('administrador/category');
 	}
 
@@ -129,7 +129,7 @@ class Category extends CI_Controller {
 		$category_id = $this->input->post('category');
 
 		foreach ($category_id as $value) {
-		  $this->basic->delete('id', $value, 'raw_material'); 
+		  $this->basic->delete('id', $value, 'material_category'); 
 		}
 
 		echo json_encode([

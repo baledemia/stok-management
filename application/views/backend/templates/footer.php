@@ -48,23 +48,6 @@
       let fileName = $(this).val().split('\\').pop()
       $(this).next('.custom-file-label').addClass('selected').html(fileName)
     })
-
-    $('.form-check-input').on('click', function(){
-      const menuId = $(this).data('menu')
-      const roleId = $(this).data('role')
-
-      $.ajax({
-        url: "<?=site_url('administrador/admin/change-access') ?>",
-        type: 'POST',
-        data: {
-          menuId: menuId,
-          roleId: roleId
-        },
-        success: function() {
-          document.location.href = "<?=site_url('administrador/admin/roleaccess/') ?>" +roleId
-        }
-      })
-    })
   </script>
 </body>
 

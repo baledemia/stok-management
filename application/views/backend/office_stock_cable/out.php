@@ -58,7 +58,7 @@
 											<select required="required" name="cable_type[]" class="form-control selectpicker" data-live-search="true" data-live-search-style="begins">
 												<option value="">-- Choose Type --</option>
 												<?php foreach($type as $ct) : ?>
-													<option value="<?=$ct->id ?>"><?=$ct->type_name ?> <?=$ct->result_size ?> <?=$ct->name_category ?> <?=$ct->color_name ?></option>
+													<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
@@ -119,7 +119,7 @@
 						</div>
 						<div class="col-md-6">
 							<label for="">Haspel</label>
-							<input required="required"  type="text" name="haspel[]" class="form-control">
+							<input type="text" name="haspel[]" class="form-control">
 						</div>
 					</div>
 					<div class="row mb-2">
@@ -130,7 +130,7 @@
 						
 						<div class="col-md-9">
 							<label for="">Noted</label>
-							<input required="required"  type="text" name="noted[]" class="form-control">
+							<input type="text" name="noted[]" class="form-control">
 						</div>
 					</div>
 					<div class="row">

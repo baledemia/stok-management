@@ -9,41 +9,41 @@
 				<div class="card mb-4">
 					<?php if($this->uri->segment(3) !== 'edit') : ?>
 					<div class="card-header py-3">
-			            <h6 class="m-0 font-weight-bold text-primary">Add New Types</h6>
+			            <h6 class="m-0 font-weight-bold text-primary">Add New merks</h6>
 			         </div>
         			<?php endif ?>
 					<div class="card-body">
 
 						<?php
 						if($this->uri->segment(3) == 'edit') :
-			        $url = site_url('administrador/type/edit/'.$type->id);
+			        $url = site_url('administrador/merk/edit/'.$merk->id_cat);
 			      else:
-			        $url = site_url('administrador/type');
+			        $url = site_url('administrador/merk');
 			      endif ?>
 
 						<form action="<?=$url ?>" method="POST">
 							<div class="form-group">
-					    		<label for="code_type">Kode Type</label>
-					    		<input type="text" class="form-control" name="code_type" id="code_type" placeholder="Kode" value="<?=($this->uri->segment(3) == 'edit') ? $type->code_type : set_value('code_type') ?>">
-					      		<?=form_error('code_type', '<small class="text-danger">', '</small>') ?>
+					    		<label for="code_merk">Kode</label>
+					    		<input type="text" class="form-control" name="code_merk" id="code_merk" placeholder="Kode" value="<?=($this->uri->segment(3) == 'edit') ? $merk->code_merk : set_value('code_merk') ?>">
+					      		<?=form_error('code_merk', '<small class="text-danger">', '</small>') ?>
 					    	</div>
 
 					    	<div class="form-group">
-					    		<label for="type_name">Type Name</label>
-					    		<input type="text" class="form-control" name="type_name" id="type_name" placeholder="Type Name" value="<?=($this->uri->segment(3) == 'edit') ? $type->type_name : set_value('type_name') ?>">
-					      		<?=form_error('type_name', '<small class="text-danger">', '</small>') ?>
+					    		<label for="name_category">Merk</label>
+					    		<input type="text" class="form-control" name="name_category" id="name_category" placeholder="Merk" value="<?=($this->uri->segment(3) == 'edit') ? $merk->name_category : set_value('name_category') ?>">
+					      		<?=form_error('name_category', '<small class="text-danger">', '</small>') ?>
 					    	</div>
-							
-							<div class="form-group">
+
+					    	<div class="form-group">
 					    		<label for="" style="margin-right: 20px; font-weight: bold">Status</label>
-					    		<input type="radio" name="status" value="1" <?php if($this->uri->segment(3) == 'edit' && $type->status == '1') { ?> checked <?php } ?>> Active
-					    		<input type="radio" name="status" value="0" style="margin-left: 20px" <?php if($this->uri->segment(3) == 'edit' && $type->status == '0') { ?> checked <?php } ?>> Not Active
+					    		<input type="radio" name="status" value="1" <?php if($this->uri->segment(3) == 'edit' && $merk->status == '1') { ?> checked <?php } ?>> Active
+					    		<input type="radio" name="status" value="0" style="margin-left: 20px" <?php if($this->uri->segment(3) == 'edit' && $merk->status == '0') { ?> checked <?php } ?>> Not Active
 					      		<?=form_error('status', '<small class="text-danger">', '</small>') ?>
 					    	</div>
-						
+							
 					      	<button class="btn btn-primary" type="submit">Save changes</button>
 					      <?php if($this->uri->segment(3) == 'edit') : ?>
-					      <a href="<?=site_url('programmes') ?>" class="btn btn-default"> Batal</a>
+					      <a href="<?=site_url('administrador/merk') ?>" class="btn btn-default"> Batal</a>
 				    	<?php endif ?>
 						</form>
 					</div>
@@ -58,8 +58,8 @@
 							  <thead>
 							    <tr>
 							      <th scope="col">#</th>
-							      <th scope="col">Kode Type</th>
-							      <th scope="col">Type</th>
+							      <th scope="col">Kode</th>
+							      <th scope="col">Merk</th>
 							      <th scope="col">Status</th>
 							      <th scope="col">Action</th>
 							    </tr>
@@ -82,7 +82,7 @@ var manageprogrammesTable;
 
 $(document).ready(function() {
 	manageprogrammesTable = $("#dataTable-programmes").DataTable({
-		"ajax": '<?php echo site_url('administrador/type/getType')  ?>',
+		"ajax": '<?php echo site_url('administrador/merk/getmerk')  ?>',
 		'orders': []
 	});	
 });

@@ -15,36 +15,34 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="card mb-4">
-					<?php if($this->uri->segment(3) !== 'edit') : ?>
+
 					<div class="card-header py-3">
 			            <button class="m-0 btn btn-success" id="tambah">Add Form</button>
 			        </div>
-        			<?php endif ?>
 
-        			<?php
-					if($this->uri->segment(3) == 'edit') :
-				        $url = site_url('administrador/cable-stock/edit/'.$merk->id);
-				    else:
-				        $url = site_url('administrador/cable-stock/add-factory-stock');
-				    endif ?>
-					<form action="<?=$url ?>" method="POST">
+					<form action="<?=site_url('administrador/surat-jalan/proses-add') ?>" method="POST">
 						<div class="card-body bg-dark">
 							<div class="row">
-								<script>
-									$("select[name=stock]").change(function(){
-										var stock = $(this).val();
-
-										if(stock == "in"){
-											$("input[name=no_sj] , select[name=warehouse]").attr('disabled', 'disabled');
-										}else{
-											$("input[name=no_sj] , select[name=warehouse]").removeAttr('disabled');
-
-										}
-									});
-								</script>
+								<div class="col-md-3">
+									<label for="" class="text-white">No. Surat Jalan</label>
+									<input required="required" type="text" name="no_sj" class="form-control">
+								</div>
 								<div class="col-md-3">
 									<label for="" class="text-white">Date</label>
 									<input required="required" type="date" name="date" class="form-control">
+								</div>
+								<div class="col-md-3">
+									<label for="" class="text-white">Nama Customer</label>
+									<select required="required" name="customer" class="form-control">
+										<option value="">-- Pilih Customer --</option>
+										<?php foreach($customer as $cw) : ?>
+											<option value="<?=$cw->id ?>"><?=$cw->nama_perusahaan ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+								<div class="col-md-3">
+									<label for="" class="text-white">Ship To</label>
+									<input type="text" name="ship_to" class="form-control">
 								</div>
 							</div>
 						</div>
@@ -52,37 +50,46 @@
 							<div id="dynamic">
 								<div class="dynamic pb-3 mb-4">
 									<div class="row mb-2">
-										<div class="col-md-3">
-											<label for="">Cable Type</label>
+										<div class="col">
+											<label for="">Item</label>
 											<select required="required" name="cable_type[]" class="form-control selectpicker" data-live-search="true" data-live-search-style="begins">
-												<option value="">-- Choose Type --</option>
+												<option value="">-- Pilih Item --</option>
 												<?php foreach($type as $ct) : ?>
 													<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
-										<div class="col-md-3">
+										<div class="col">
 											<label for="">Length</label>
 											<input required="required"  type="text" name="length[]" class="form-control">
 										</div>
 
-										<div class="col-md-6">
-											<label for="">Haspel</label>
-											<input type="text" name="haspel[]" class="form-control">
+										<div class="col">
+											<label for="">Satuan</label>
+											<input type="text" name="satuan[]" class="form-control" required="required">
 										</div>
-									</div>
-									<div class="row mb-2">
-										<div class="col-md-3">
+
+										<div class="col">
 											<label for="">Qty</label>
 											<input required="required"  type="number" name="qty[]" class="form-control">
 										</div>
-										<div class="col-md-9">
-											<label for="">Noted</label>
-											<input type="text" name="noted[]" class="form-control">
+
+										<div class="col">
+											<label for="">Haspel</label>
+											<input type="text" name="haspel[]" class="form-control">
 										</div>
+										
 									</div>
 								</div>
 							</div>
+							
+							<div class="row bg-dark p-4 mb-3">
+								<div class="col-md-12">
+									<label for="" class="text-white">Catatan</label>
+									<textarea name="catatan" class="form-control"></textarea>
+								</div>
+							</div>
+
 							<div class="row">
 								<div class="form-group col-md-12">
 									<input type="submit" name="submit" class="btn btn-primary" value="Save">
@@ -103,34 +110,34 @@
 			$('#dynamic').append(`
 				<div class="dynamic pb-2 mb-4" id="row`+no+`">
 					<div class="row mb-2">
-						<div class="col-md-3">
-							<label for="">Cable Type</label>
+						<div class="col">
+							<label for="">Item</label>
 							<select required="required" name="cable_type[]" class="form-control selectpicker">
-								<option value="">-- Choose Type --</option>
+								<option value="">-- Pilih Item --</option>
 								<?php foreach($type as $ct) : ?>
-									<option value="<?=$ct->id ?>"><?=$ct->type_name ?> <?=$ct->result_size ?> <?=$ct->name_category ?> <?=$ct->color_name ?></option>
+									<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
-						<div class="col-md-3">
+						<div class="col">
 							<label for="">Length</label>
 							<input required="required"  type="text" name="length[]" class="form-control">
 						</div>
-						<div class="col-md-6">
-							<label for="">Haspel</label>
-							<input required="required"  type="text" name="haspel[]" class="form-control">
+						<div class="col">
+							<label for="">Satuan</label>
+							<input required="required"  type="text" name="satuan[]" class="form-control">
 						</div>
-					</div>
-					<div class="row mb-2">
-						<div class="col-md-3">
+
+						<div class="col">
 							<label for="">Qty</label>
 							<input required="required"  type="text" name="qty[]" class="form-control">
 						</div>
-						
-						<div class="col-md-9">
-							<label for="">Noted</label>
-							<input required="required"  type="text" name="noted[]" class="form-control">
+
+						<div class="col">
+							<label for="">Haspel</label>
+							<input type="text" name="haspel[]" class="form-control">
 						</div>
+
 					</div>
 					<div class="row">
 						<div class="col-md-12">
