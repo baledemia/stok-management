@@ -11,7 +11,7 @@
 </style>
 
 <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800"><?=$title ?></h1>
+    <h1 class="h3 mb-4 text-gray-800"><a href="<?=site_url('administrador/cable-stock') ?>" title="" class="btn btn-primary"><i class="fas fa-arrow-left"></i></a>  <?=$title ?></h1>
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="card mb-4">
@@ -108,7 +108,7 @@
 							<select required="required" name="cable_type[]" class="form-control selectpicker">
 								<option value="">-- Choose Type --</option>
 								<?php foreach($type as $ct) : ?>
-									<option value="<?=$ct->id ?>"><?=$ct->type_name ?> <?=$ct->result_size ?> <?=$ct->name_category ?> <?=$ct->color_name ?></option>
+									<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
 								<?php endforeach; ?>
 							</select>
 						</div>
@@ -118,7 +118,7 @@
 						</div>
 						<div class="col-md-6">
 							<label for="">Haspel</label>
-							<input required="required"  type="text" name="haspel[]" class="form-control">
+							<input type="text" name="haspel[]" class="form-control">
 						</div>
 					</div>
 					<div class="row mb-2">
@@ -129,7 +129,7 @@
 						
 						<div class="col-md-9">
 							<label for="">Noted</label>
-							<input required="required"  type="text" name="noted[]" class="form-control">
+							<input type="text" name="noted[]" class="form-control">
 						</div>
 					</div>
 					<div class="row">

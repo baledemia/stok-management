@@ -12,7 +12,7 @@ class Surat_jalan extends CI_Controller {
 
 	public function index()
 	{
-		$data['title'] = 'Surat <strong>Jalan</strong>';
+		$data['title'] = 'Delivery <strong>Order</strong>';
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
@@ -25,7 +25,7 @@ class Surat_jalan extends CI_Controller {
 
 	public function add()
 	{
-		$data['title'] 		= 'Surat <strong>Jalan</strong>';
+		$data['title'] 		= 'Delivery <strong>Order</strong>';
 		$data['user'] 		= $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
 		$data['type'] 		= $this->db->get('cable_type_size')->result();
 		$data['customer'] 	= $this->db->get('customer')->result();
@@ -43,6 +43,7 @@ class Surat_jalan extends CI_Controller {
 		$sum 			= 0;
 		$index 			= 0;
 		$data_detail 	= array();
+		$data_out		= array();
 
 		$cable_type		= $this->input->post('cable_type');
 
@@ -73,24 +74,43 @@ class Surat_jalan extends CI_Controller {
 
 		$this->basic->save($data_order, 'delivery_order_cable');
 		$no_sj = $this->db->insert_id();
-
+		// echo $this->input->post('date');die;
 		foreach($cable_type as $res){
 			
 			$get_price	= $this->db->get_where('cable_type_size', ['id' => $res])->row('price');
 			$subtotal	= $this->input->post('qty')[$index] * $get_price;
 
+			$getData  = $this->db->get_where('cable_stok', ['cable_id' => $res, 'length' => $this->input->post('length')[$index], 'warehouse_kode !=' => 'PAB'])->row();
+			$getstock = (int) $getData->stok - $this->input->post('qty')[$index];
+
 			array_push($data_detail, array(
 		    	'delivery_code_detail'	=> $no_sj,
 				'cable_code'			=> $res,
 		    	'qty'					=> $this->input->post('qty')[$index],    
+		    	'length'				=> $this->input->post('length')[$index],    
 		    	'satuan'				=> $this->input->post('satuan')[$index],    
 				'price'					=> $get_price,
 				'sub_total'				=> $subtotal
 	     	));
 		    
+			// print_r($data_out);die;
+		    array_push($data_out, array(
+		    	'no_sj'					=> $no_sj,
+				'cable_type_id'			=> $res,
+		    	'length'				=> $this->input->post('length')[$index],    
+		    	'warehouse_code'		=> $getData->warehouse_kode,    
+		    	'stok_out'				=> $this->input->post('qty')[$index],    
+		    	'noted'					=> $this->input->post('catatan'),    
+				'haspel'				=> $this->input->post('haspel')[$index],
+				'tgl_order'				=> $this->input->post('date')
+	     	));
+		    
+		    
+		    $this->db->update('cable_stok', ['stok' => $getstock], ['cable_id' => $res, 'length' => $this->input->post('length')[$index], 'warehouse_kode' => $getData->warehouse_kode]);
+
         	$index++; 
 		}
-
+       	$this->basic->save_batch($data_out, 'cable_order');
        	$this->basic->save_batch($data_detail, 'delivery_order_cable_detail');
        	$this->session->set_flashdata('success', '<div class="alert alert-success">Data Has Been Saved ! /div>');
         redirect('administrador/surat-jalan');
@@ -107,7 +127,7 @@ class Surat_jalan extends CI_Controller {
 		foreach ($data as $key => $value) :
 
 			$buttons = '
-					<a href="'.site_url('administrador/office-cable-stock/show/'.$value['id_delivery_order']).'" class="badge badge-success">Lihat Detail</a>
+					<a href="'.site_url('administrador/surat-jalan/show/'.$value['id_delivery_order']).'" class="badge badge-success">Lihat Detail</a>
 				';
 
 			$result['data'][$key] = array(
@@ -289,5 +309,62 @@ class Surat_jalan extends CI_Controller {
 		$this->load->view('backend/templates/topbar', $data);
 		$this->load->view('backend/stok_kabel/out', $data);
 		$this->load->view('backend/templates/footer');
+	}
+
+	public function get_qty(){
+		$cable 	= $this->input->post('cable');
+		$length	= $this->input->post('length');
+
+		$qty = $this->db->get_where('cable_stok', ['cable_id' => $cable, 'length' => $length, 'warehouse_kode !=' => 'PAB'])->row();
+
+		if($qty){
+			$stok = $qty->stok; 
+		}else{
+			$stok = 0;
+		}
+
+		echo json_encode(['qty' => $stok]);
+	}
+
+	public function show()
+	{
+		$data['title'] = 'Detail <strong>Delivery Order</strong>';
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
+
+		$this->load->view('backend/templates/header', $data);
+		$this->load->view('backend/templates/sidebar', $data);
+		$this->load->view('backend/templates/topbar', $data);
+		$this->load->view('backend/surat-jalan/detail', $data);
+		$this->load->view('backend/templates/footer');
+	}
+
+	public function getDetail($id)
+	{
+		$result = array('data' => array());
+
+		$this->db->select('delivery_order_cable_detail.*, cable_type_size.cable_name');
+		$this->db->join('cable_type_size', 'cable_type_size.id = delivery_order_cable_detail.cable_code');
+		$data = $this->db->get('delivery_order_cable_detail')->result_array();
+
+		$no = 1;
+		foreach ($data as $key => $value) :
+
+			$confirm2 = "return confirm('Are you sure return this data?')";
+
+			$result['data'][$key] = array(
+				$no,
+				$value['cable_name'],
+				$value['length'],
+				$value['satuan'],
+				$value['qty'],
+				"Rp ".number_format($value['price']),
+				"Rp ".number_format($value['sub_total'])
+			);
+
+			$no++;
+		endforeach;
+
+		echo json_encode($result);
 	}
 }

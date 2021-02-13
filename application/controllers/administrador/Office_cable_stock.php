@@ -12,9 +12,10 @@ class Office_cable_Stock extends CI_Controller {
 
 	public function index()
 	{
-		$data['title'] = 'Cable <strong>Stock</strong>';
-		$data['user'] = $this->db->get_where('user', 
+		$data['title'] 	= 'Cable <strong>Stock</strong>';
+		$data['user'] 	= $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
+		$data['count']	= $this->db->get('stock_pending')->num_rows();
 
 		$this->load->view('backend/templates/header', $data);
 		$this->load->view('backend/templates/sidebar', $data);
@@ -88,7 +89,7 @@ class Office_cable_Stock extends CI_Controller {
 			$confirm2 = "return confirm('Are you sure return this data?')";
 
 			$buttons = '
-					<a href="'.site_url('administrador/office-cable-stock/show/'.$value['id']).'" class="badge badge-success">Lihat Detail</a>
+					<a href="'.site_url('administrador/office-cable-stock/show/'.$value['warehouse_kode'].'/'.$value['cable_id'].'/'.$value['length']).'" class="badge badge-success">Lihat Detail</a>
 				';
 
 			$result['data'][$key] = array(
@@ -266,5 +267,55 @@ class Office_cable_Stock extends CI_Controller {
 		$this->load->view('backend/templates/topbar', $data);
 		$this->load->view('backend/stok_kabel/out', $data);
 		$this->load->view('backend/templates/footer');
+	}
+
+	public function show()
+	{
+		$data['title'] = 'Detail <strong>Stock</strong>';
+		$data['user'] = $this->db->get_where('user', 
+			['username' => $this->session->userdata('username')])->row_array();
+
+		$this->load->view('backend/templates/header', $data);
+		$this->load->view('backend/templates/sidebar', $data);
+		$this->load->view('backend/templates/topbar', $data);
+		$this->load->view('backend/office_stock_cable/detail', $data);
+		$this->load->view('backend/templates/footer');
+	}
+
+	public function getDetail()
+	{
+		$result = array('data' => array());
+
+		$gudang = $this->uri->segment(4);
+		$kabel 	= $this->uri->segment(5);
+		$length = $this->uri->segment(6);
+
+		$this->db->select('cable_order.*, cable_type_size.cable_name');
+		$this->db->join('cable_type_size', 'cable_type_size.id = cable_order.cable_type_id');
+		$this->db->where('cable_order.warehouse_code', $gudang);
+		$this->db->where('cable_order.cable_type_id', $kabel);
+		$this->db->where('cable_order.length', $length);
+		$data = $this->db->get('cable_order')->result_array();
+		// echo $this->db->last_query();die;
+		$no = 1;
+		foreach ($data as $key => $value) :
+
+			$confirm2 = "return confirm('Are you sure return this data?')";
+
+			$result['data'][$key] = array(
+				$no,
+				$value['cable_name'],
+				$value['length'],
+				$value['stok_in'],
+				$value['stok_out'],
+				$value['noted'],
+				$value['haspel'],
+				tgl_indo($value['tgl_order'])
+			);
+
+			$no++;
+		endforeach;
+
+		echo json_encode($result);
 	}
 }
