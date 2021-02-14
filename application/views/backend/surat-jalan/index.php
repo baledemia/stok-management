@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<?=$this->session->flashdata('message') ?>
-				<a href="<?=site_url('administrador/surat-jalan/add') ?>" title="" class="btn btn-danger my-3">Tambah Surat Jalan</a>
+				<a href="<?=site_url('administrador/surat-jalan/add') ?>" title="" class="btn btn-danger my-3">Tambah Delivery Order</a>
 				<div class="card mb-4" id="result">
 					<div class="card-body">
 						<div class="table-responsive">

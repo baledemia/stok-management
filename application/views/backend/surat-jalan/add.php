@@ -49,19 +49,25 @@
 						<div class="card-body">
 							<div id="dynamic">
 								<div class="dynamic pb-3 mb-4">
-									<div class="row mb-2">
+									<div class="row mb-2" id="row1" data-id='1'>
 										<div class="col">
 											<label for="">Item</label>
-											<select required="required" name="cable_type[]" class="form-control selectpicker" data-live-search="true" data-live-search-style="begins">
+											<select required="required" name="cable_type[]" class="form-control selectpicker sel1" data-live-search="true" data-live-search-style="begins">
 												<option value="">-- Pilih Item --</option>
 												<?php foreach($type as $ct) : ?>
+													<?php 
+													$cekStock = $this->db->get_where('cable_stok', ['cable_id' => $ct->id, 'warehouse_kode !=' => 'PAB', 'stok >' => '0'])->row();
+													
+													if($cekStock) {
+													?>
 													<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
+													<?php } ?>
 												<?php endforeach; ?>
 											</select>
 										</div>
 										<div class="col">
 											<label for="">Length</label>
-											<input required="required"  type="text" name="length[]" class="form-control">
+											<input required="required"  type="text" name="length[]" class="form-control uintTextBox length" disabled="disabled" id="le1">
 										</div>
 
 										<div class="col">
@@ -71,7 +77,7 @@
 
 										<div class="col">
 											<label for="">Qty</label>
-											<input required="required"  type="number" name="qty[]" class="form-control">
+											<input required="required"  type="text" name="qty[]" class="form-control uintTextBox qty1">
 										</div>
 
 										<div class="col">
@@ -109,19 +115,25 @@
 			no++;
 			$('#dynamic').append(`
 				<div class="dynamic pb-2 mb-4" id="row`+no+`">
-					<div class="row mb-2">
+					<div class="row mb-2" data-id="`+no+`">
 						<div class="col">
 							<label for="">Item</label>
-							<select required="required" name="cable_type[]" class="form-control selectpicker">
+							<select required="required" name="cable_type[]" class="form-control selectpicker sel`+no+`">
 								<option value="">-- Pilih Item --</option>
 								<?php foreach($type as $ct) : ?>
+								<?php 
+								$cekStock = $this->db->get_where('cable_stok', ['cable_id' => $ct->id, 'warehouse_kode !=' => 'PAB', 'stok >' => '0'])->row();
+								
+								if($cekStock) {
+								?>
 									<option value="<?=$ct->id ?>"><?=$ct->cable_name ?></option>
+									<?php } ?>
 								<?php endforeach; ?>
 							</select>
 						</div>
 						<div class="col">
 							<label for="">Length</label>
-							<input required="required"  type="text" name="length[]" class="form-control">
+							<input required="required"  type="text" name="length[]" class="form-control uintTextBox length" disabled="disabled" id="le`+no+`">
 						</div>
 						<div class="col">
 							<label for="">Satuan</label>
@@ -130,7 +142,7 @@
 
 						<div class="col">
 							<label for="">Qty</label>
-							<input required="required"  type="text" name="qty[]" class="form-control">
+							<input required="required"  type="text" name="qty[]" class="form-control uintTextBox qty`+no+`">
 						</div>
 
 						<div class="col">
@@ -161,4 +173,39 @@
  $(document).ready(function() {
      $('.selectpicker').select2();
  });
+
+ $(document).on('change', '.selectpicker', function(){
+	var id      = $(this).parents(".row").attr("data-id");
+	
+ 	$('#le'+id).removeAttr('disabled');
+ 	$('#le'+id).val('');
+ 	$('.qty'+id).val('');
+ })
+
+$(document).on("keypress keyup blur", ".uintTextBox", function (event) {    
+   $(this).val($(this).val().replace(/[^\d].+/, ""));
+    if ((event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+});
+
+$(document).on("keypress keyup blur", ".length", function (event) { 
+	var id      = $(this).parents(".row").attr("data-id");
+	var cable 	= $(".sel"+id).val();
+	var length 	= $(this).val();
+
+	console.log(cable)
+	$.ajax({
+		type 	: "POST",
+		data 	: {cable: cable, length: length},
+		dataType: "JSON",
+		url		: "<?=site_url('administrador/surat-jalan/get-qty') ?>",
+		success : function(data){
+			$(".qty"+id).val(data.qty)
+		}
+	})
+
+	// $(this).parents(".row").find(".qty").val(qty);
+
+});
 </script>

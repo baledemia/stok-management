@@ -104,7 +104,7 @@
   <li class="nav-item">
     <a class="nav-link" href="<?=site_url('administrador/surat-jalan') ?>">
       <i class="fas fa-table"></i>
-      <span>Surat Jalan</span>
+      <span>Delivery Order</span>
     </a>
   </li>
   
