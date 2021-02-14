@@ -21,7 +21,7 @@
     </ol>
   </div>
 
-  <div class="toast" data-autohide="false">
+  <!-- <div class="toast" data-autohide="false">
     <div class="toast-header">
       <strong class="mr-auto">Langkah Pertama</strong>
       <small>11 mins ago</small>
@@ -32,7 +32,7 @@
     <div class="toast-body">
       Hello, world! This is a toast message.
     </div>
-  </div>
+  </div> -->
 
   <div class="row">
     <div class="col-sm-12">
@@ -56,11 +56,12 @@
 
   <div class="row mt-3 mb-3">
 
-    <aside class="col-md-3">
+    <aside class="col-md-3 mb-3">
       <!--   SIDEBAR   -->
       <ul class="list-group mb-3 d-flex justify-content-between">
         <a class="list-group-item active" href="<?=site_url('administrador/bahan-baku') ?>"><i class="fa fa-warehouse"></i> Gudang </a>
-        <a class="list-group-item" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-sync"></i> Drawing </a>
+        <a class="list-group-item" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-chevron-right"></i> Drawing </a>
+       <!--  <a class="list-group-item" href="<?=site_url('administrador/oven-drum/submit') ?>"><i class="fa fa-sync"></i> Submit Drawing </a> -->
       </ul>
 
       <a class="btn btn-outline-light btn-block" href="<?=site_url('administrador/bahan-baku/oven-drum') ?>"> 

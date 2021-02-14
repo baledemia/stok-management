@@ -15,8 +15,8 @@
       <h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
     </div>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="./">Laporan</a></li>
-      <li class="breadcrumb-item active">Stok Kawat</li>
+      <li class="breadcrumb-item"><a href="./">Bahan Baku</a></li>
+      <li class="breadcrumb-item active">Oven Drum</li>
     </ol>
   </div>
 
@@ -25,15 +25,11 @@
       <div class="card">
       <div class="card-body d-flex">
         <div class="form-inline d-inline-flex mr-auto">
-          <labe>Category
+          <label>Category
           <select disabled class="ml-2 form-control custom-select">
             <option>CU</option>
           </select>
-        </labe></div>
-        <div class="btn-group">
-          <a href="<?=site_url('administrador/order-stok/submit/cu') ?>" class="btn btn-outline-primary active">Transaksi Baru</a>
-          <a href="<?=site_url('administrador/material-stok') ?>" class="btn btn-outline-primary">Laporan Summary</a>
-        </div>
+        </label></div>
       </div>
       </div>
     </div> 
@@ -41,11 +37,12 @@
 
   <div class="row mt-3 mb-3">
 
-    <aside class="col-md-3">
+    <aside class="col-md-3 mb-3">
       <!--   SIDEBAR   -->
       <ul class="list-group mb-3 d-flex justify-content-between">
         <a class="list-group-item" href="<?=site_url('administrador/bahan-baku') ?>"><i class="fa fa-warehouse"></i> Gudang </a>
-        <a class="list-group-item" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-sync"></i> Drawing </a>
+        <a class="list-group-item" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-chevron-right"></i> Drawing </a>
+        <!-- <a class="list-group-item" href="<?=site_url('administrador/oven-drum/submit') ?>"><i class="fa fa-sync"></i> Submit Drawing </a> -->
       </ul>
 
       <a class="btn btn-outline-light btn-block active" href="<?=site_url('administrador/bahan-baku/oven-drum') ?>"> 
@@ -79,7 +76,7 @@
 						</div>
 					</header>
 
-					<h6 class="card-title">Pilih No Mesin</h6>
+					<!-- <h6 class="card-title">Pilih No Mesin</h6>
           <div class="form-group">
             <select name="no_machine" class="form-control custom-select">
               <option value="">Select</option>
@@ -88,7 +85,7 @@
               <?= set_select('no_machine', $tb['no_machine'], FALSE) ?>><?=$tb['type_machine'] ?></option>
               <?php endforeach ?>
             </select>
-          </div>			
+          </div>		 -->	
 
   				<table class="table table-borderless" id="table-bobin">
   					<thead class="text-muted thead-light">

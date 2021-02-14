@@ -15,8 +15,8 @@
       <h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
     </div>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="./">Laporan</a></li>
-      <li class="breadcrumb-item active">Stok Kawat</li>
+      <li class="breadcrumb-item"><a href="./">Submit</a></li>
+      <li class="breadcrumb-item active">Drawing Bobin</li>
     </ol>
   </div>
 
@@ -25,15 +25,11 @@
       <div class="card">
       <div class="card-body d-flex">
         <div class="form-inline d-inline-flex mr-auto">
-          <labe>Category
+          <label>Category
           <select disabled class="ml-2 form-control custom-select">
             <option>CU</option>
           </select>
-        </labe></div>
-        <div class="btn-group">
-          <a href="" class="btn btn-outline-primary active">Transaksi Baru</a>
-          <a href="" class="btn btn-outline-primary">Laporan Summary</a>
-        </div>
+        </label></div>
       </div>
       </div>
     </div> 
@@ -41,11 +37,12 @@
 
   <div class="row mt-3 mb-3">
 
-    <aside class="col-md-3">
+    <aside class="col-md-3 mb-3">
       <!--   SIDEBAR   -->
       <ul class="list-group mb-3 d-flex justify-content-between">
         <a class="list-group-item" href="<?=site_url('administrador/bahan-baku') ?>"><i class="fa fa-warehouse"></i> Gudang </a>
-        <a class="list-group-item" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-sync"></i> Drawing </a>
+        <a class="list-group-item" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-chevron-right"></i> Drawing </a>
+        <!-- <a class="list-group-item active" href="<?=site_url('administrador/oven-drum/submit') ?>"><i class="fa fa-sync"></i> Submit Drawing </a> -->
       </ul>
 
       <a class="btn btn-outline-light btn-block active" href="<?=site_url('administrador/bahan-baku/oven-drum') ?>"> 
@@ -67,22 +64,21 @@
 
 
     <main class="col-md-9">
-
+    	<form action="" method="POST">
 			<div class="card">
 				
-
 				<div class="card-body">
 					<header class="mb-4">
-						<h4 class="card-title">Submit Bobin</h4>
+						<h4 class="card-title">Submit Drawing</h4>
 					</header>
 
-					<div class="form-group">
-          	<label>No Mesin</label> <br>
+					<!-- <div class="form-group">
+          	<label class="text-primary">No Mesin</label> <br>
             <input type="text" name="no_mesin" size="5">
-          </div>
+          </div> -->
 
           <div class="form-group">
-          	<label>Pilih Type Bobin Besar</label>
+          	<label class="text-primary">Dari Bobin Besar</label>
             <select name="material_name" class="form-control custom-select">
               <option value="">Select</option>
               <?php foreach($type_bahanbaku as $tb) : ?>
@@ -92,6 +88,7 @@
             </select>
           </div>
 					
+					<label class="text-primary">Mendapatkan hasil berapa bobin kecil?</label>
 					<div class="input-group input-spinner">
 						<div class="input-group-prepend">
 							<button class="btn btn-outline-light text-shadow-none" type="button" id="button-minus"> 
@@ -122,7 +119,7 @@
 						<tr>
 							<td>
 								<div class="input-group">
-									<input type="text" class="form-control" name="no_bobin" placeholder="No Bobin">
+									<input type="text" class="form-control" name="no_bobin[]" placeholder="No Bobin">
 									<span class="input-group-append"> 
 										<button class="btn text-shadow-none">Kg</button>
 									</span>
@@ -130,7 +127,7 @@
 							</td>
 							<td> 
 								<div class="input-group">
-									<input type="text" class="form-control" name="berat_bobin" placeholder="Berat Bobin">
+									<input type="text" class="form-control" name="berat_bobin[]" placeholder="Berat Bobin">
 									<span class="input-group-append"> 
 										<button class="btn text-shadow-none">Kg</button>
 									</span>
@@ -138,7 +135,7 @@
 							</td>
 							<td> 
 								<div class="input-group">
-									<input type="text" class="form-control" name="bruto" placeholder="Bruto">
+									<input type="text" class="form-control" name="bruto[]" placeholder="Bruto">
 									<span class="input-group-append"> 
 										<button class="btn text-shadow-none">Kg</button>
 									</span>
@@ -157,11 +154,11 @@
 
 				<div class="card-body border-top">
 					<a href="<?=site_url('administrador/bahan-baku/oven-drum') ?>" class="btn btn-sm btn-primary float-left"><i class="fa fa-chevron-left"></i> Kembali </a>
-					<p class="icontext float-right"><i class="icon text-muted fa fa-spinner"></i> Proses pemanasan bobin sekitar 1-3 hari</p>
+					
 				</div> <!-- card-body.// -->
 
 			</div> <!-- card.// -->
-
+			</form>
 
     </main>
   </div>

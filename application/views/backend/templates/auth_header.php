@@ -13,13 +13,15 @@
 
   <!-- Custom fonts for this template-->
   <link href="<?=base_url('assets') ?>/backend/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Rubik&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="<?=base_url('assets') ?>/backend/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="<?=base_url('assets') ?>/backend/css/ruang-admin.min.css" rel="stylesheet">
   <style>
-    body {font-family: 'Rubik', sans-serif !important; font-size: 14px !important}
+    body {font-family: 'Noto Serif', serif !important; font-size: 14px !important}
   </style>
 
 </head>

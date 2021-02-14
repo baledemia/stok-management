@@ -16,8 +16,8 @@
       <h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
     </div>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="./">Laporan</a></li>
-      <li class="breadcrumb-item active">Stok Kawat</li>
+      <li class="breadcrumb-item"><a href="./">Bahan Baku</a></li>
+      <li class="breadcrumb-item active">Bunching</li>
     </ol>
   </div>
 
@@ -31,10 +31,10 @@
             <option>CU</option>
           </select>
         </labe></div>
-        <div class="btn-group">
+        <!-- <div class="btn-group">
           <a href="<?=site_url('administrador/order-stok/submit/cu') ?>" class="btn btn-outline-primary active">Transaksi Baru</a>
           <a href="<?=site_url('administrador/material-stok') ?>" class="btn btn-outline-primary">Laporan Summary</a>
-        </div>
+        </div> -->
       </div>
       </div>
     </div> 
@@ -99,8 +99,21 @@
               </div> <!-- form-group end.// -->
             </div> <!-- form-row.// -->
 
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <div class="form-text text-muted"><small>dari gudang ke proses bunching</small></div>
+                  <label for="type_stok" class="text-primary">Laporan untuk barang : </label>
+                  <select name="type_stok" disabled id="type_stok">
+                    <option value="stok_out">Keluar</option>
+                  </select>
+                  
+                </div>
+              </div>
+            </div>
+
             <div class="form-group">
-              <label for="material_kawat_stok_id" class="text-primary">Type Bobin Besar</label>
+              <label for="material_kawat_stok_id" class="text-primary">Berdasarkan Bobin Besar</label>
               <select class="form-control custom-select" id="material_kawat_stok_id" 
                 name="material_kawat_stok_id">
                 <option value="">Select</option>
@@ -113,20 +126,9 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <p><label for="type_stok" class="text-primary">Laporan untuk barang : </label></p>
-                  <select name="type_stok" disabled id="type_stok">
-                    <option value="stok_out">Keluar</option>
-                  </select>
-                  <div class="form-text text-muted"><small>dari gudang ke proses bunching</small></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">
+                  <label for="barang_keluar" class="text-primary">Total</label>
                   <div class="input-group">
                     <input type="text" id="barang_keluar" 
                     name="barang_keluar" placeholder="Ex: 19.400 - (kg)" class="form-control" 
@@ -136,6 +138,7 @@
                     </div>
                   </div>
                   <?=form_error('barang_keluar', '<small class="text-danger">', '</small>') ?>
+                  <div class="form-text text-muted"><small>barang keluar untuk di bunching</small></div>
                 </div>
               </div>
             </div>

@@ -16,37 +16,35 @@
       <h1 class="h3 mb-0 text-gray-800"><?=$title ?></h1>
     </div>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="./">Laporan</a></li>
-      <li class="breadcrumb-item active">Stok Kawat</li>
+      <li class="breadcrumb-item"><a href="./">Bahan Baku</a></li>
+      <li class="breadcrumb-item active">Drawing</li>
     </ol>
   </div>
 
   <div class="row">
     <div class="col-sm-12">
       <div class="card">
-      <div class="card-body d-flex">
-        <div class="form-inline d-inline-flex mr-auto">
-          <labe>Category
-          <select disabled class="ml-2 form-control custom-select">
-            <option>CU</option>
-          </select>
-        </labe></div>
-        <div class="btn-group">
-          <a href="<?=site_url('administrador/order-stok/submit/cu') ?>" class="btn btn-outline-primary active">Transaksi Baru</a>
-          <a href="<?=site_url('administrador/material-stok') ?>" class="btn btn-outline-primary">Laporan Summary</a>
+        <div class="card-body d-flex">
+          <div class="form-inline d-inline-flex mr-auto">
+            <label>Category
+              <select disabled class="ml-2 form-control custom-select">
+                <option>CU</option>
+              </select>
+            </label>
+          </div>
         </div>
-      </div>
       </div>
     </div> 
   </div> 
 
   <div class="row mt-3 mb-3">
 
-    <aside class="col-md-3">
+    <aside class="col-md-3 mb-3">
       <!--   SIDEBAR   -->
       <ul class="list-group mb-3 d-flex justify-content-between">
         <a class="list-group-item" href="<?=site_url('administrador/bahan-baku') ?>"><i class="fa fa-warehouse"></i> Gudang </a>
-        <a class="list-group-item active" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-sync"></i> Drawing </a>
+        <a class="list-group-item active" href="<?=site_url('administrador/bahan-baku/drawing') ?>"><i class="fa fa-chevron-right"></i> Drawing </a>
+        <!-- <a class="list-group-item" href="<?=site_url('administrador/oven-drum/submit') ?>"><i class="fa fa-sync"></i> Submit Drawing </a> -->
       </ul>
 
       <a class="btn btn-outline-light btn-block" href="<?=site_url('administrador/bahan-baku/oven-drum') ?>"> 
@@ -72,14 +70,14 @@
         <div class="card-header d-flex justify-content-between">
           <div>
             <h4 class="card-title mb-0">Drawing</h4>
-            <p>Proses Bobin Besar ke Bobin Kecil</p>
+            <p>Proses bobin besar ke bobin kecil</p>
           </div>
           <div>
             <div class="input-group">
               <div class="input-group-prepend">
-                <span class="input-group-text bg-muted"> Total Stok Saat Ini </span>
+                <span class="input-group-text bg-muted">Total Stok Saat Ini </span>
               </div>
-              <input type="text" value="617.575 Kg" size="8" readonly class="form-control" id="result_stok" name="result_stok">
+              <input type="text" size="8" readonly class="form-control" id="result_stok" name="result_stok">
             </div>
           </div>
         </div>
@@ -100,8 +98,21 @@
               </div> <!-- form-group end.// -->
             </div> <!-- form-row.// -->
 
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <div class="form-text text-muted mb-1"><small>proses drawing dari gudang</small></div>
+                  <label for="type_stok" class="text-primary">Laporan untuk barang : </label>
+                  <select name="type_stok" disabled id="type_stok">
+                    <option value="stok_out">Keluar</option>
+                  </select>
+                  
+                </div>
+              </div>
+            </div>
+
             <div class="form-group">
-              <label for="material_kawat_stok_id" class="text-primary">Type Bobin Besar</label>
+              <label for="material_kawat_stok_id" class="text-primary">Berdasarkan Bobin Besar</label>
               <select class="form-control custom-select" id="material_kawat_stok_id" 
                 name="material_kawat_stok_id">
                 <option value="">Select</option>
@@ -114,20 +125,9 @@
             </div>
 
             <div class="row">
-              <div class="col-sm-8">
-                <div class="form-group">
-                  <p><label for="type_stok" class="text-primary">Laporan untuk barang : </label></p>
-                  <select name="type_stok" disabled id="type_stok">
-                    <option value="stok_out">Keluar</option>
-                  </select>
-                  <div class="form-text text-muted"><small>dari gudang ke proses drawing</small></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
               <div class="col-sm-12">
                 <div class="form-group">
+                  <label for="barang_keluar" class="text-primary">Total</label>
                   <div class="input-group">
                     <input type="text" id="barang_keluar" 
                     name="barang_keluar" placeholder="Ex: 19.400 - (kg)" class="form-control" 
@@ -137,6 +137,7 @@
                     </div>
                   </div>
                   <?=form_error('barang_keluar', '<small class="text-danger">', '</small>') ?>
+                  <div class="form-text text-muted"><small>barang keluar untuk di drawing</small></div>
                 </div>
               </div>
             </div>
@@ -165,6 +166,27 @@
       format: 'yyyy-mm-dd',
       footer: true, 
       modal: true
+    })
+
+    $('#result_stok').val('')
+    $('#material_kawat_stok_id').on('change', function(){
+      const id = $(this).val()
+      if(id) {
+        $(this).removeClass('is-invalid')
+
+        $.ajax({
+          url: "<?=site_url('administrador/bahan-baku/ajax-laporan-material') ?>",
+          method: 'POST',
+          data: {id: id},
+          success: function(response) {
+            const data = JSON.parse(response)
+            $('#result_stok').val(data.material_kawat_stok.stok + ' kg')
+          }
+        })
+      } else {
+        $(this).addClass('is-invalid')
+        $('#result_stok').val('')
+      }
     })
   })
 </script>
