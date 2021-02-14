@@ -7,7 +7,7 @@
     </div>
     <div class="sidebar-brand-text mx-3">PT. Sukses Setia</div>
   </a>
-
+  
   <hr class="sidebar-divider mt-0">
 
   <?php #$role_id = $this->session->userdata('role_id');
@@ -107,7 +107,6 @@
     </a>
   </li>
 
-
   <hr class="sidebar-divider">
   <div class="sidebar-heading">
     Barang Setengah Jadi
@@ -144,6 +143,12 @@
       <i class="fas fa-paste"></i>
       <span>Tipe Kabel</span>
     </a>
+    <div id="collapseImportCable" class="collapse" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="<?=site_url('administrador/merk') ?>">Merk</a>
+        <a class="collapse-item" href="<?=site_url('administrador/cable-import') ?>">Import Cable</a>
+      </div>
+    </div>
   </li>
 
   <hr class="sidebar-divider">
@@ -172,7 +177,7 @@
 
   <li class="nav-item">
     <a class="nav-link" href="<?=site_url('administrador/menu') ?>">
-    <i class="fas fa-fw fa-folder"></i>
+      <i class="far fa-calendar-minus"></i>
       <span>Menu</span></a>
   </li>
 

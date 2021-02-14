@@ -13,6 +13,7 @@
 
   <!-- Custom fonts for this template-->
   <link href="<?=base_url('assets') ?>/backend/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
 

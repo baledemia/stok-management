@@ -29,54 +29,19 @@ class Supplier extends CI_Controller {
 			$this->load->view('backend/supplier/index', $data);
 			$this->load->view('backend/templates/footer');
 		else:
-			if($_FILES["avatar"]["name"] !== "") { 
-				$this->set_upload();
+			
+			$data = [
+				'kode_supplier' 	=> $this->input->post('kode_supplier', true),
+				'name' 				=> $this->input->post('supplier_name', true),
+				'number_phone' 		=> $this->input->post('number_phone', true),
+				'address' 			=> $this->input->post('address', true),
+				'active' 			=> $this->input->post('status', true),
+			];
 
-				if($this->upload->do_upload("avatar") ) :
-					$image = $this->upload->data();
-					$url = $image['file_name'];	
+			$this->db->insert('supplier', $data);
+			$this->session->set_flashdata("message", '<div class="alert alert-success">New supplier Has Been saved.</div>');
 
-					$data = [
-						'kode_supplier' 	=> $this->input->post('kode_supplier', true),
-						'name' 				=> $this->input->post('supplier_name', true),
-						'number_phone' 		=> $this->input->post('number_phone', true),
-						'avatar'			=> $url,
-						'address' 			=> $this->input->post('address', true),
-						'active' 			=> $this->input->post('status', true),
-					];
-
-					$this->db->insert('supplier', $data);
-					$this->session->set_flashdata("message", '<div class="alert alert-success">New supplier Has Been saved.</div>');
-					redirect('administrador/supplier#result');
-				else:
-					$data = [
-						'kode_supplier' 	=> $this->input->post('kode_supplier', true),
-						'name' 				=> $this->input->post('supplier_name', true),
-						'number_phone' 		=> $this->input->post('number_phone', true),
-						'address' 			=> $this->input->post('address', true),
-						'active' 			=> $this->input->post('status', true),
-					];
-
-					$this->db->insert('supplier', $data);
-					$this->session->set_flashdata("message", '<div class="alert alert-success">New supplier Has Been saved.</div>');
-
-					redirect('administrador/supplier#result');
-				endif;
-			} else {
-				$data = [
-					'kode_supplier' 	=> $this->input->post('kode_supplier', true),
-					'name' 				=> $this->input->post('supplier_name', true),
-					'number_phone' 		=> $this->input->post('number_phone', true),
-					'address' 			=> $this->input->post('address', true),
-					'active' 			=> $this->input->post('status', true),
-				];
-
-				$this->db->insert('supplier', $data);
-				$this->session->set_flashdata("message", '<div class="alert alert-success">New supplier Has Been saved.</div>');
-
-				redirect('administrador/supplier#result');
-			}
-
+			redirect('administrador/supplier#result');
 		endif;
 	}
 
@@ -94,6 +59,7 @@ class Supplier extends CI_Controller {
 					<a href="'.site_url('administrador/supplier/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
 				';
 
+			
 			if( $value['active'] == 0){
 				$status = 'Not Active';
 			}else{
@@ -244,15 +210,5 @@ class Supplier extends CI_Controller {
 	{
 		$error = array('errors' => $this->upload->display_errors()); #show errornya
 		$this->session->set_flashdata('error-upload', '<div class="alert alert-danger">'.$error['errors'].'</div>');
-	}
-
-	public function getKodeSupplier($id)
-	{
-		if($id > 0) : 
-			$this->db->select('kode_supplier');
-			$resultSupplier = $this->db->get_where("supplier", ['id' => $id])->row_array();
-
-			echo json_encode($resultSupplier);
-		endif;
 	}
 }

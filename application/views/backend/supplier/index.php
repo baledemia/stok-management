@@ -1,4 +1,4 @@
-<link href="<?=base_url('assets') ?>/backend/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<link href="<?=base_url('assets') ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <!-- Begin Page Content -->
   <div class="container-fluid">
 
@@ -38,15 +38,6 @@
 					    		<label for="number_phone">Phone Number</label>
 					    		<input type="text" class="form-control" name="number_phone" id="number_phone" placeholder="Number Phone" value="<?=($this->uri->segment(3) == 'edit') ? $supplier->number_phone : set_value('number_phone') ?>">
 					      		<?=form_error('number_phone', '<small class="text-danger">', '</small>') ?>
-					    	</div>
-
-					    	<div class="form-group">
-					    		<label for="avatar"><strong>Avatar</strong></label>
-					    		<input type="file" class="form-control" name="avatar" id="avatar">
-					    		<?php if($this->uri->segment(3) == 'edit') { ?>
-					    		<img src="<?=base_url('assets/supplier/'.$supplier->avatar) ?>" alt="" width="90">
-					    		<?php } ?>
-					      		<?=form_error('avatar', '<small class="text-danger">', '</small>') ?>	
 					    	</div>
 
 					    	<div class="form-group">

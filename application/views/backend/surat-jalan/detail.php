@@ -2,18 +2,14 @@
 
 <div class="container-fluid" id="container-wrapper">
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Cable Stock</h1>
+    <h1 class="h3 mb-0 text-gray-800"> <a href="<?=site_url('administrador/surat-jalan') ?>" title="" class="btn btn-primary"><i class="fas fa-arrow-left"></i></a> Detail Delivery Order</h1>
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="./">Cable Stock</a></li>
-      <li class="breadcrumb-item">Order</li>
+      <li class="breadcrumb-item"><a href="./">Delivery Order</a></li>
+      <li class="breadcrumb-item">Detail</li>
       <li class="breadcrumb-item active">Stok</li>
     </ol>
   </div>
 
-  <div class="d-sm-flex">
-    <a href="<?=site_url('administrador/cable-stock/add-factory-stock') ?>" class="btn btn-primary mr-3">Stock In</a>
-    <a href="<?=site_url('administrador/cable-stock/out-factory-stock') ?>" class="btn btn-danger mr-3">Stock Out</a>
-  </div>
   <div class="row mt-4">
     <div class="col-md-12">
       <?=$this->session->flashdata('success') ?>
@@ -31,9 +27,10 @@
                     <th scope="col">#</th>
                     <th scope="col">Nama Kabel</th>
                     <th scope="col">Ukuran</th>
-                    <th scope="col">Kode tempat Penyimpanan</th>
-                    <th scope="col">Total Stok</th>
-                    <th scope="col">Action</th>
+                    <th scope="col">Satuan</th>
+                    <th scope="col">Jumlah</th>
+                    <th scope="col">Harga</th>
+                    <th scope="col">Sub Total</th>
                   </tr>
                 </thead>
               </table>
@@ -53,7 +50,7 @@ var manageprogrammesTable;
 
 $(document).ready(function() {
   manageprogrammesTable = $("#dataTable-programmes").DataTable({
-    "ajax": '<?php echo site_url('administrador/cable-stock/getStock')  ?>',
+    "ajax": '<?php echo site_url('administrador/surat-jalan/getDetail/'.$this->uri->segment(3))  ?>',
     'orders': []
   }); 
 });

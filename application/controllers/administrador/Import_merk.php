@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Merk extends CI_Controller {
+class Import_merk extends CI_Controller {
 	
 	public function __construct()
 	{
@@ -16,26 +16,26 @@ class Merk extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 
-		$this->form_validation->set_rules('code_merk', 'kode', 'required');
-		$this->form_validation->set_rules('name_category', 'Merk', 'required');
-		$this->form_validation->set_rules('status', 'Status', 'required');
+		$this->form_validation->set_rules('merk_name', 'Merk Name', 'required');
+		$this->form_validation->set_rules('address', 'Address', 'required');
+		$this->form_validation->set_rules('phone', 'phone', 'required');
 
 		if($this->form_validation->run() === false) :
 			$this->load->view('backend/templates/header', $data);
 			$this->load->view('backend/templates/sidebar', $data);
 			$this->load->view('backend/templates/topbar', $data);
-			$this->load->view('backend/merk/cable', $data);
+			$this->load->view('backend/merk/index', $data);
 			$this->load->view('backend/templates/footer');
 		else:
 			$data = [
-				'code_merk'			=> $this->input->post('code_merk', true),
-				'name_category' 	=> $this->input->post('name_category', true),
-				'status' 			=> $this->input->post('status', true),
+				'merk_name'			=> $this->input->post('merk_name', true),
+				'address' 			=> $this->input->post('address', true),
+				'phone' 			=> $this->input->post('phone', true),
 			];
 
-			$this->db->insert('cable_category', $data);
+			$this->db->insert('import_merk', $data);
 			$this->session->set_flashdata("message", '<div class="alert alert-success">New merk Has Been saved.</div>');
-			redirect('administrador/merk#result');
+			redirect('administrador/import-merk#result');
 				
 		endif;
 	}
@@ -44,27 +44,22 @@ class Merk extends CI_Controller {
 	{
 		$result = array('data' => array());
 
-		$this->db->order_by('code_merk', 'ASC');
-		$data = $this->db->get('cable_category')->result_array();
+		$data = $this->db->get('import_merk')->result_array();
 		$no = 1;
 		foreach ($data as $key => $value) :
 			$confirm = "return confirm('Are you sure delete this data?')";
 
 			$buttons = '
-					<a href="'.site_url('administrador/merk/delete/'.$value['id_cat']).'" class="badge badge-danger" onclick="'.$confirm.'">Delete</a>
-					<a href="'.site_url('administrador/merk/edit/'.$value['id_cat']).'" class="badge badge-success">Edit</a>
+					<a href="'.site_url('administrador/import-merk/delete/'.$value['id']).'" class="badge badge-danger" onclick="'.$confirm.'">Delete</a>
+					<a href="'.site_url('administrador/import-merk/edit/'.$value['id']).'" class="badge badge-success">Edit</a>
 				';
 
-			if($value['status'] == '1'){
-				$status = 'Active';
-			}else{
-				$status = 'Not Active';
-			}
 			$result['data'][$key] = array(
 				$no,
-				$value['code_merk'],
-				$value['name_category'],
-				$status,
+				$value['merk_name'],
+				$value['address'],
+				$value['phone'],
+				tgl_indo($value['created_at']),
 				$buttons
 			);
 
@@ -76,10 +71,10 @@ class Merk extends CI_Controller {
 
 	public function edit($id = 0)
 	{
-		if($id == 0 && empty($id)) redirect("administrador/merk");
+		if($id == 0 && empty($id)) redirect("administrador/import-merk");
 
-		$merk = $this->menu->first("cable_category", 'id_cat', $id); 
-		if(empty($merk)) redirect("administrador/merk"); 
+		$merk = $this->menu->first("import_merk", 'id', $id); 
+		if(empty($merk)) redirect("administrador/import-merk"); 
 
 		$merk = $merk->row();
 		$data = array('merk' => $merk);
@@ -88,26 +83,27 @@ class Merk extends CI_Controller {
 		$data['user'] = $this->db->get_where('user', 
 			['username' => $this->session->userdata('username')])->row_array();
 		
-		$this->form_validation->set_rules('code_merk', 'kode', 'required');
-		$this->form_validation->set_rules('name_category', 'Merk', 'required');
-		$this->form_validation->set_rules('status', 'Status', 'required');
+		$this->form_validation->set_rules('merk_name', 'Merk Name', 'required');
+		$this->form_validation->set_rules('address', 'Address', 'required');
+		$this->form_validation->set_rules('phone', 'phone', 'required');
 
 		if($this->form_validation->run() === false) :
 			$this->load->view('backend/templates/header', $data);
 			$this->load->view('backend/templates/sidebar', $data);
 			$this->load->view('backend/templates/topbar', $data);
-			$this->load->view('backend/merk/cable', $data);
+			$this->load->view('backend/merk/index', $data);
 			$this->load->view('backend/templates/footer');
 		else:
 			$data = [
-				'code_merk'			=> $this->input->post('code_merk', true),
-				'name_category' 	=> $this->input->post('name_category', true),
-				'status' 			=> $this->input->post('status', true),
+				'merk_name'			=> $this->input->post('merk_name', true),
+				'address' 			=> $this->input->post('address', true),
+				'phone' 			=> $this->input->post('phone', true),
+				'updated_at'		=> date("Y-m-d H:i:s")
 			];
 		
-			$this->db->update('cable_category', $data, array('id_cat' => $id)); #metode untuk update data.
+			$this->db->update('import_merk', $data, array('id' => $id)); #metode untuk update data.
 			$this->session->set_flashdata("message", '<div class="alert alert-success">ID merk <strong>'.$id.'</strong> updated</div>');
-			redirect('administrador/merk#result');
+			redirect('administrador/import-merk#result');
 		endif;
 	}
 
@@ -115,11 +111,11 @@ class Merk extends CI_Controller {
 	{
 		if($id == 0 && empty($id)) redirect("administrador/merk"); 
 
-		$result = $this->menu->first("cable_category", 'id_cat', $id);
-		if(empty($result)) redirect("administrador/merk"); 
+		$result = $this->menu->first("import_merk", 'id', $id);
+		if(empty($result)) redirect("administrador/import-merk"); 
 
 		$this->session->set_flashdata("message", '<div class="alert alert-danger">ID merk <strong>'.$id.'</strong> deleted</div>');
-		$this->menu->delete('id_cat', $id, 'cable_category'); 
-		redirect('administrador/merk#result');
+		$this->menu->delete('id', $id, 'import_merk'); 
+		redirect('administrador/import-merk#result');
 	}
 }

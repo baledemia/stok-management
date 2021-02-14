@@ -3,7 +3,7 @@
   <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-4 text-gray-800"><?=$title ?></h1>
+    <h1 class="h3 mb-4 text-gray-800"><a href="<?=site_url('administrador/office-cable-stock') ?>" title="" class="btn btn-primary"><i class="fas fa-arrow-left"></i></a>  <?=$title ?></h1>
 		<div class="row">
 			<div class="col-sm-12">
 				
