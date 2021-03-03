@@ -345,8 +345,8 @@ class Surat_jalan extends CI_Controller {
 
 		$this->db->select('delivery_order_cable_detail.*, cable_type_size.cable_name');
 		$this->db->join('cable_type_size', 'cable_type_size.id = delivery_order_cable_detail.cable_code');
-		$data = $this->db->get('delivery_order_cable_detail')->result_array();
-
+		$data = $this->db->get_where('delivery_order_cable_detail', ['delivery_order_cable_detail.delivery_code_detail' => $id])->result_array();
+		// echo $this->db->last_query();die;
 		$no = 1;
 		foreach ($data as $key => $value) :
 
@@ -367,4 +367,37 @@ class Surat_jalan extends CI_Controller {
 
 		echo json_encode($result);
 	}
+
+	public function print_do($id)
+    {
+
+        require FCPATH . "vendor/autoload.php";
+
+        $data = array();
+
+        $this->db->join('customer', 'customer.id = delivery_order_cable.customer');
+        $do = $this->db->get_where("delivery_order_cable", ["delivery_order_cable.id_delivery_order" => $id])->row();
+        
+        $this->db->select('delivery_order_cable_detail.*, cable_type_size.cable_name, cable_type_size.cable_code as item');
+        $this->db->join('cable_type_size', 'cable_type_size.id = delivery_order_cable_detail.cable_code');
+        $dodetail = $this->db->get_where("delivery_order_cable_detail", ["delivery_order_cable_detail.delivery_code_detail" => $id])->result();
+
+        $this->db->select('delivery_order_cable_detail.*, cable_type_size.cable_name, cable_type_size.cable_code as item');
+        $this->db->join('cable_type_size', 'cable_type_size.id = delivery_order_cable_detail.cable_code');
+        $totalitem = $this->db->get_where("delivery_order_cable_detail", ["delivery_order_cable_detail.delivery_code_detail" => $id])->num_rows();
+
+        $dompdf = new Dompdf\Dompdf();
+        $dompdf->set_paper('A4', 'landscape');
+
+
+        $html = $this->load->view("backend/surat-jalan/delivery_order_print", [
+            "do" => $do, "dodetail" => $dodetail, "totalitem" => $totalitem
+        ], true);
+
+        $dompdf->loadHTML($html);
+        $dompdf->render();
+        $filename = " Delivery Order";
+        // ob_end_clean(); 
+        $dompdf->stream($filename . '.pdf', array('Attachment' => 0));
+    }
 }
